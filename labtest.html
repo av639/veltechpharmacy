@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Lab Tests</title>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #2c7be5;
+            --secondary-color: #6c757d;
+            --success-color: #00d97e;
+            --danger-color: #e63757;
+            --light-color: #f9fafd;
+            --dark-color: #12263f;
+            --border-radius: 0.375rem;
+            --box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 90px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2c7be5 0%, #6c8eff 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            margin-bottom: 30px;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 25px;
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 7px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-box button:hover {
+            background-color: #1a68d1;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .category-list {
+            list-style: none;
+        }
+        
+        .category-list li {
+            margin-bottom: 10px;
+        }
+        
+        .category-list a {
+            display: block;
+            padding: 8px 10px;
+            color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            transition: all 0.3s;
+        }
+        
+        .category-list a:hover, .category-list a.active {
+            background-color: rgba(44, 123, 229, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .filter-options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .filter-options input {
+            margin-right: 10px;
+        }
+        
+        /* Test Categories */
+        .content-area {
+            flex-grow: 1;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-img {
+            height: 160px;
+            overflow: hidden;
+        }
+        
+        .category-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-card:hover .category-img img {
+            transform: scale(1.05);
+        }
+        
+        .category-info {
+            padding: 20px;
+        }
+        
+        .category-info h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .category-info p {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .view-tests {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .view-tests:hover {
+            background-color: #1a68d1;
+        }
+        
+        /* Popular Tests */
+        .tests-table {
+            width: 100%;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+        
+        .tests-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tests-table th, .tests-table td {
+            padding: 15px;
+            text-align: left;
+        }
+        
+        .tests-table th {
+            font-weight: 500;
+        }
+        
+        .tests-table tbody tr {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tests-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        
+        .tests-table tbody tr:hover {
+            background-color: rgba(44, 123, 229, 0.05);
+        }
+        
+        .test-price {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .book-now {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .book-now:hover {
+            background-color: #00c571;
+        }
+        
+        /* Test Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            max-width: 800px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            color: var(--dark-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .test-details {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-image {
+            flex: 0 0 300px;
+        }
+        
+        .test-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+        }
+        
+        .test-info {
+            flex-grow: 1;
+        }
+        
+        .test-info h4 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .test-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .test-meta span {
+            display: flex;
+            align-items: center;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+        
+        .test-meta i {
+            margin-right: 5px;
+            color: var(--primary-color);
+        }
+        
+        .test-description {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .test-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a68d1;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(44, 123, 229, 0.1);
+        }
+        
+        /* Test Preparation */
+        .preparation-steps {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .preparation-steps h4 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .preparation-steps ul {
+            padding-left: 20px;
+        }
+        
+        .preparation-steps li {
+            margin-bottom: 8px;
+        }
+        
+        /* Blog Section */
+        .blog-section {
+            margin-top: 50px;
+        }
+        
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .blog-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .blog-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .blog-card:hover .blog-img img {
+            transform: scale(1.05);
+        }
+        
+        .blog-content {
+            padding: 20px;
+        }
+        
+        .blog-date {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .blog-content h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .blog-excerpt {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .read-more {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .blog-card:hover .read-more i {
+            transform: translateX(3px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #adb5bd;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #adb5bd;
+            font-size: 0.9rem;
+        }
+        
+        /* Test Overview Page Styles */
+        .test-overview {
+            display: none;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1000px;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .test-overview-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .test-overview-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .test-overview-content {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .test-overview-main {
+            flex: 2;
+        }
+        
+        .test-overview-sidebar {
+            flex: 1;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+        }
+        
+        .test-section h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .lab-details-card {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .lab-details-card h4 {
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .lab-info-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .lab-info-item i {
+            margin-right: 10px;
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .thank-you-message {
+            text-align: center;
+            padding: 30px;
+            background-color: #f0f8ff;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .thank-you-message h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .thank-you-message p {
+            margin-bottom: 20px;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            opacity: 0;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 1000;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .test-details {
+                flex-direction: column;
+            }
+            
+            .test-image {
+                flex: 0 0 auto;
+            }
+            
+            .test-overview-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-links li {
+                margin: 5px 10px;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                padding: 40px 0;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tests-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .blog-posts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="d:\mini project\logo\WhatsApp_Image_2025-03-22_at_18.46.02_2c60d0a4-removebg-preview.png" alt="VelTech Pharmacy Logo">
+                    <h1>VelTech Pharmacy</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="file:///D:/mini%20project/homepage.html/HOME%20PAGE.html">Home</a></li>
+                    <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/medicine%20page.html">Medicines</a></li>
+                    <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/labtest.html" class="active">Lab Tests</a></li>
+                    <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/health%20care.html">Healthcare</a></li>
+                    <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/healthblog.html">Blog</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Comprehensive Lab Tests</h2>
+            <p>Book diagnostic tests from certified labs with accurate results and fast turnaround times. Home sample collection available.</p>
+            <div class="search-box">
+                <input type="text" placeholder="Search for tests...">
+                <button>Search</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li><a href="#" class="active">All Tests</a></li>
+                        <li><a href="#">Blood Tests</a></li>
+                        <li><a href="#">Hormone Tests</a></li>
+                        <li><a href="#">Diabetes Tests</a></li>
+                        <li><a href="#">Liver Function Tests</a></li>
+                        <li><a href="#">Kidney Function Tests</a></li>
+                        <li><a href="#">Cardiac Tests</a></li>
+                        <li><a href="#">Vitamin Tests</a></li>
+                        <li><a href="#">Allergy Tests</a></li>
+                        <li><a href="#">COVID-19 Tests</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3>Filter By</h3>
+                    <div class="filter-options">
+                        <h4>Sample Type</h4>
+                        <label><input type="checkbox" checked> Blood</label>
+                        <label><input type="checkbox" checked> Urine</label>
+                        <label><input type="checkbox" checked> Saliva</label>
+                        <label><input type="checkbox" checked> Stool</label>
+                        
+                        <h4 style="margin-top: 15px;">Price Range</h4>
+                        <label><input type="checkbox" checked> Under ₹500</label>
+                        <label><input type="checkbox" checked> ₹500 - ₹1000</label>
+                        <label><input type="checkbox" checked> ₹1000 - ₹2000</label>
+                        <label><input type="checkbox" checked> Above ₹2000</label>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3>Why Choose Us?</h3>
+                    <ul style="list-style-type: none;">
+                        <li style="margin-bottom: 10px;">✔ NABL Certified Labs</li>
+                        <li style="margin-bottom: 10px;">✔ Home Sample Collection</li>
+                        <li style="margin-bottom: 10px;">✔ Accurate Results</li>
+                        <li style="margin-bottom: 10px;">✔ Online Reports</li>
+                        <li style="margin-bottom: 10px;">✔ Doctor Consultation</li>
+                    </ul>
+                </div>
+            </aside>
+            
+            <!-- Content Area -->
+            <main class="content-area">
+                <h2 class="section-title">Test Categories</h2>
+                
+                <div class="category-grid">
+                    <!-- Blood Tests -->
+                    <div class="category-card" onclick="openTestModal('blood-tests')">
+                        <div class="category-img">
+                            <img src="https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Blood Tests">
+                        </div>
+                        <div class="category-info">
+                            <h3>Blood Tests</h3>
+                            <p>Complete blood analysis including CBC, glucose, cholesterol, and more.</p>
+                            <a href="#" class="view-tests">View Tests</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Diabetes Tests -->
+                    <div class="category-card" onclick="openTestModal('diabetes-tests')">
+                        <div class="category-img">
+                            <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Diabetes Tests">
+                        </div>
+                        <div class="category-info">
+                            <h3>Diabetes Tests</h3>
+                            <p>Monitor and manage diabetes with our comprehensive test packages.</p>
+                            <a href="#" class="view-tests">View Tests</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Hormone Tests -->
+                    <div class="category-card" onclick="openTestModal('hormone-tests')">
+                        <div class="category-img">
+                            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Hormone Tests">
+                        </div>
+                        <div class="category-info">
+                            <h3>Hormone Tests</h3>
+                            <p>Check thyroid, testosterone, estrogen and other hormone levels.</p>
+                            <a href="#" class="view-tests">View Tests</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Liver Function Tests -->
+                    <div class="category-card" onclick="openTestModal('liver-tests')">
+                        <div class="category-img">
+                            <img src="https://static.wixstatic.com/media/112147_600877ac01974e928dae7ebb05ce009f~mv2.jpg/v1/fill/w_980,h_980,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/112147_600877ac01974e928dae7ebb05ce009f~mv2.jpg" alt="Liver Function Tests">
+                        </div>
+                        <div class="category-info">
+                            <h3>Liver Function Tests</h3>
+                            <p>Assess liver health with SGOT, SGPT, bilirubin and other markers.</p>
+                            <a href="#" class="view-tests">View Tests</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Kidney Function Tests -->
+                    <div class="category-card" onclick="openTestModal('kidney-tests')">
+                        <div class="category-img">
+                            <img src="https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Kidney Function Tests">
+                        </div>
+                        <div class="category-info">
+                            <h3>Kidney Function Tests</h3>
+                            <p>Check creatinine, urea, and other kidney health markers.</p>
+                            <a href="#" class="view-tests">View Tests</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Cardiac Tests -->
+                    <div class="category-card" onclick="openTestModal('cardiac-tests')">
+                        <div class="category-img">
+                            <img src="https://images.unsplash.com/photo-1551601651-bc60f254d532?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Cardiac Tests">
+                        </div>
+                        <div class="category-info">
+                            <h3>Cardiac Tests</h3>
+                            <p>Evaluate heart health with lipid profile, troponin and other tests.</p>
+                            <a href="#" class="view-tests">View Tests</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Popular Tests</h2>
+                
+                <div class="table-responsive">
+                    <table class="tests-table">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Category</th>
+                                <th>Sample</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr onclick="openTestModal('complete-blood-count')">
+                                <td>Complete Blood Count (CBC)</td>
+                                <td>Blood Test</td>
+                                <td>Blood</td>
+                                <td class="test-price">₹350</td>
+                                <td><button class="book-now" onclick="bookTest(event, 'Complete Blood Count (CBC)')">Book Now</button></td>
+                            </tr>
+                            <tr onclick="openTestModal('thyroid-profile')">
+                                <td>Thyroid Profile (T3, T4, TSH)</td>
+                                <td>Hormone Test</td>
+                                <td>Blood</td>
+                                <td class="test-price">₹600</td>
+                                <td><button class="book-now" onclick="bookTest(event, 'Thyroid Profile (T3, T4, TSH)')">Book Now</button></td>
+                            </tr>
+                            <tr onclick="openTestModal('lipid-profile')">
+                                <td>Lipid Profile</td>
+                                <td>Cardiac Test</td>
+                                <td>Blood</td>
+                                <td class="test-price">₹500</td>
+                                <td><button class="book-now" onclick="bookTest(event, 'Lipid Profile')">Book Now</button></td>
+                            </tr>
+                            <tr onclick="openTestModal('liver-function-test')">
+                                <td>Liver Function Test (LFT)</td>
+                                <td>Liver Test</td>
+                                <td>Blood</td>
+                                <td class="test-price">₹700</td>
+                                <td><button class="book-now" onclick="bookTest(event, 'Liver Function Test (LFT)')">Book Now</button></td>
+                            </tr>
+                            <tr onclick="openTestModal('kidney-function-test')">
+                                <td>Kidney Function Test (KFT)</td>
+                                <td>Kidney Test</td>
+                                <td>Blood</td>
+                                <td class="test-price">₹650</td>
+                                <td><button class="book-now" onclick="bookTest(event, 'Kidney Function Test (KFT)')">Book Now</button></td>
+                            </tr>
+                            <tr onclick="openTestModal('vitamin-d-test')">
+                                <td>Vitamin D Test</td>
+                                <td>Vitamin Test</td>
+                                <td>Blood</td>
+                                <td class="test-price">₹1200</td>
+                                <td><button class="book-now" onclick="bookTest(event, 'Vitamin D Test')">Book Now</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Health Blog Section -->
+                <div class="blog-section">
+                    <h2 class="section-title">Health Blog</h2>
+                    
+                    <div class="blog-posts">
+                        <div class="blog-card" onclick="openBlogModal('importance-regular-checkups')">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Importance of Regular Health Checkups">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-date">June 15, 2023</div>
+                                <h3>Importance of Regular Health Checkups</h3>
+                                <p class="blog-excerpt">Learn why regular health screenings are crucial for early detection and prevention of diseases.</p>
+                                <a href="#" class="read-more">Read More <i>→</i></a>
+                            </div>
+                        </div>
+                        
+                        <div class="blog-card" onclick="openBlogModal('understanding-blood-tests')">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Understanding Blood Test Results">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-date">May 28, 2023</div>
+                                <h3>Understanding Your Blood Test Results</h3>
+                                <p class="blog-excerpt">A guide to interpreting common blood test markers and what they mean for your health.</p>
+                                <a href="#" class="read-more">Read More <i>→</i></a>
+                            </div>
+                        </div>
+                        
+                        <div class="blog-card" onclick="openBlogModal('managing-diabetes')">
+                            <div class="blog-img">
+                                <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Managing Diabetes">
+                            </div>
+                            <div class="blog-content">
+                                <div class="blog-date">April 10, 2023</div>
+                                <h3>Managing Diabetes: Tests and Lifestyle Tips</h3>
+                                <p class="blog-excerpt">Essential tests for diabetes management and lifestyle changes to keep blood sugar in check.</p>
+                                <a href="#" class="read-more">Read More <i>→</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Test Details Modal -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTestTitle">Complete Blood Count (CBC)</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="test-details">
+                    <div class="test-image">
+                        <img id="modalTestImage" src="https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Test Image">
+                    </div>
+                    <div class="test-info">
+                        <h4>Test Overview</h4>
+                        <div class="test-meta">
+                            <span><i>📋</i> Category: <span id="modalTestCategory">Blood Test</span></span>
+                            <span><i>💉</i> Sample: <span id="modalTestSample">Blood</span></span>
+                            <span><i>⏱️</i> Report: <span id="modalTestReport">24 Hours</span></span>
+                        </div>
+                        <div class="test-meta">
+                            <span><i>💰</i> Price: <span id="modalTestPrice" class="test-price">₹350</span></span>
+                            <span><i>🏠</i> Home Collection: <span id="modalTestHomeCollection">Available</span></span>
+                        </div>
+                        <div class="test-description" id="modalTestDescription">
+                            <p>The Complete Blood Count (CBC) is a common blood test that evaluates your overall health and detects a wide range of disorders, including anemia, infection, and leukemia. It measures several components and features of your blood, including red blood cells, white blood cells, and platelets.</p>
+                            <p>The CBC test provides important information about the types and numbers of cells in your blood, helping doctors check your general health status, screen for certain diseases, monitor medical conditions, and monitor medical treatment.</p>
+                        </div>
+                        <div class="test-actions">
+                            <button class="btn btn-primary" onclick="bookTestFromModal()">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preparation-steps">
+                    <h4>Test Preparation</h4>
+                    <ul>
+                        <li>Fasting is not required for CBC test</li>
+                        <li>Inform your doctor about any medications you're taking</li>
+                        <li>Wear short sleeves or loose clothing for easy access to your arm</li>
+                        <li>Stay hydrated before the test</li>
+                    </ul>
+                </div>
+                
+                <div class="test-includes">
+                    <h4>This Test Includes</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Red Blood Cell Count</div>
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">White Blood Cell Count</div>
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Hemoglobin</div>
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Hematocrit</div>
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Platelet Count</div>
+                        <div style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">MCV, MCH, MCHC</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Blog Modal -->
+    <div id="blogModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalBlogTitle">Importance of Regular Health Checkups</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="blog-image" style="margin-bottom: 20px;">
+                    <img id="modalBlogImage" src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Blog Image" style="width: 100%; border-radius: var(--border-radius);">
+                </div>
+                <div class="blog-meta" style="display: flex; justify-content: space-between; margin-bottom: 20px; color: var(--secondary-color);">
+                    <span id="modalBlogDate">June 15, 2023</span>
+                    <span id="modalBlogAuthor">By Dr. Priya Sharma</span>
+                </div>
+                <div class="blog-content" id="modalBlogContent">
+                    <p>Regular health checkups are essential for maintaining good health and preventing diseases. Many serious health conditions show no symptoms in their early stages, making routine screenings crucial for early detection and treatment.</p>
+                    
+                    <h4 style="margin: 20px 0 10px; color: var(--dark-color);">Why Regular Checkups Matter</h4>
+                    <p>1. <strong>Early Detection</strong>: Many life-threatening diseases like cancer, diabetes, and heart disease can be detected early through routine tests, significantly improving treatment outcomes.</p>
+                    <p>2. <strong>Preventive Care</strong>: Regular checkups allow doctors to identify risk factors and recommend lifestyle changes before health problems develop.</p>
+                    <p>3. <strong>Health Monitoring</strong>: For those with chronic conditions, regular tests help monitor the effectiveness of treatments and make necessary adjustments.</p>
+                    <p>4. <strong>Cost Savings</strong>: Preventive care is often less expensive than treating advanced diseases that require hospitalization or surgery.</p>
+                    
+                    <h4 style="margin: 20px 0 10px; color: var(--dark-color);">Recommended Tests by Age</h4>
+                    <p><strong>20s-30s</strong>: Basic blood work, cholesterol screening, blood pressure checks, STD tests (if sexually active), and skin cancer screenings.</p>
+                    <p><strong>40s</strong>: All of the above plus diabetes screening, mammograms (for women), prostate exams (for men), and colon cancer screening starting at 45.</p>
+                    <p><strong>50s+</strong>: Additional tests like bone density scans, more frequent cancer screenings, and tests for age-related conditions.</p>
+                    
+                    <h4 style="margin: 20px 0 10px; color: var(--dark-color);">Making the Most of Your Checkup</h4>
+                    <p>- Prepare a list of questions or concerns for your doctor</p>
+                    <p>- Bring a list of all medications and supplements you're taking</p>
+                    <p>- Be honest about your lifestyle habits (diet, exercise, smoking, alcohol)</p>
+                    <p>- Follow up on any recommended tests or specialist visits</p>
+                    
+                    <p style="margin-top: 20px;">At VelTech Pharmacy, we offer comprehensive health checkup packages tailored to different age groups and risk factors. Our qualified healthcare professionals can help you determine which tests are right for you based on your medical history and family background.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test Overview Page (hidden by default) -->
+    <div id="testOverview" class="test-overview">
+        <div class="test-overview-header">
+            <h2 id="overviewTestTitle">Complete Blood Count (CBC)</h2>
+            <p>Your test has been successfully booked!</p>
+        </div>
+        
+        <div class="test-overview-content">
+            <div class="test-overview-main">
+                <div class="test-section">
+                    <h3>Test Details</h3>
+                    <div id="overviewTestDescription">
+                        <p>The Complete Blood Count (CBC) is a common blood test that evaluates your overall health and detects a wide range of disorders, including anemia, infection, and leukemia. It measures several components and features of your blood, including red blood cells, white blood cells, and platelets.</p>
+                        <p>The CBC test provides important information about the types and numbers of cells in your blood, helping doctors check your general health status, screen for certain diseases, monitor medical conditions, and monitor medical treatment.</p>
+                    </div>
+                </div>
+                
+                <div class="test-section">
+                    <h3>What's Included</h3>
+                    <ul id="overviewTestIncludes">
+                        <li>Red Blood Cell Count (RBC)</li>
+                        <li>White Blood Cell Count (WBC)</li>
+                        <li>Hemoglobin (Hgb)</li>
+                        <li>Hematocrit (Hct)</li>
+                        <li>Mean Corpuscular Volume (MCV)</li>
+                        <li>Mean Corpuscular Hemoglobin (MCH)</li>
+                        <li>Mean Corpuscular Hemoglobin Concentration (MCHC)</li>
+                        <li>Platelet Count</li>
+                        <li>Red Cell Distribution Width (RDW)</li>
+                    </ul>
+                </div>
+                
+                <div class="test-section">
+                    <h3>Preparation Instructions</h3>
+                    <ul id="overviewTestPreparation">
+                        <li>No fasting required for this test</li>
+                        <li>Continue taking your regular medications unless instructed otherwise by your doctor</li>
+                        <li>Wear loose clothing that allows easy access to your arm</li>
+                        <li>Drink plenty of water before the test to stay hydrated</li>
+                        <li>Inform the technician if you have a history of fainting during blood draws</li>
+                    </ul>
+                </div>
+                
+                <div class="test-section">
+                    <h3>What to Expect</h3>
+                    <div id="overviewTestExpectations">
+                        <p><strong>During the Test:</strong> A healthcare professional will clean the area (usually the inside of your elbow) with an antiseptic wipe. An elastic band will be tied around your upper arm to make the veins more visible. A needle will be inserted into a vein to draw blood, which usually takes less than a minute.</p>
+                        <p><strong>After the Test:</strong> A small bandage will be applied to the puncture site. You may experience minor bruising, which should fade in a few days. Results are typically available within 24 hours and will be accessible through our online portal.</p>
+                        <p><strong>Interpreting Results:</strong> Your doctor will review the results with you. Abnormal results may indicate various conditions, but they don't necessarily mean you have a serious illness. Further testing may be required for diagnosis.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-overview-sidebar">
+                <div class="lab-details-card">
+                    <h4>Lab Details</h4>
+                    <div class="lab-info-item">
+                        <i>🏢</i>
+                        <div>
+                            <strong>VelTech Diagnostic Center</strong><br>
+                             25/11patel road perambur<br>
+                            Near City Hospital, Chennai - 600011
+                        </div>
+                    </div>
+                    <div class="lab-info-item">
+                        <i>📞</i>
+                        <div>+91 9361640821</div>
+                    </div>
+                    <div class="lab-info-item">
+                        <i>✉️</i>
+                        <div>lab@veltechdiagnostics.com</div>
+                    </div>
+                    <div class="lab-info-item">
+                        <i>🕒</i>
+                        <div>Monday - Saturday: 7:00 AM - 8:00 PM<br>
+                        Sunday: 8:00 AM - 2:00 PM</div>
+                    </div>
+                </div>
+                
+                <div class="lab-details-card">
+                    <h4>Your Booking Details</h4>
+                    <div class="lab-info-item">
+                        <i>📅</i>
+                        <div><strong>Date:</strong> <span id="bookingDate">Loading...</span></div>
+                    </div>
+                    <div class="lab-info-item">
+                        <i>⏰</i>
+                        <div><strong>Time Slot:</strong> <span id="bookingTime">Loading...</span></div>
+                    </div>
+                    <div class="lab-info-item">
+                        <i>🆔</i>
+                        <div><strong>Booking ID:</strong> <span id="bookingId">VT-2023-98765</span></div>
+                    </div>
+                    <div class="lab-info-item">
+                        <i>💰</i>
+                        <div><strong>Amount Paid:</strong> <span id="bookingAmount">₹350</span></div>
+                    </div>
+                </div>
+                
+                <div class="lab-details-card">
+                    <h4>Need Help?</h4>
+                    <p>Our customer support team is available to assist you with any questions about your test or booking.</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 10px;">Contact Support</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="thank-you-message">
+            <h3>Thank You for Choosing VelTech!</h3>
+            <p>Your health is our priority. We've sent a confirmation with all the details to your registered email.</p>
+            <p>For home collection, our phlebotomist will arrive at your scheduled time. Please keep your ID proof ready.</p>
+            <button class="btn btn-outline" onclick="window.location.href='#'">Back to Tests</button>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>VelTech Pharmacy</h3>
+                    <p style="color: #adb5bd; margin-bottom: 15px;">Your trusted partner in health and wellness, providing quality medicines and diagnostic services.</p>
+                    <div class="social-links">
+                        <a href="#"><i>📱</i></a>
+                        <a href="#"><i>📘</i></a>
+                        <a href="#"><i>📸</i></a>
+                        <a href="#"><i>🐦</i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="file:///D:/mini%20project/homepage.html/HOME%20PAGE.html">Home</a></li>
+                        <li><a href="file:///D:/mini%20project/footer.html%20down%20page/aboutus.html">About Us</a></li>
+                        <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/labtest.html">Lab Tests</a></li>
+                        <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/medicine%20page.html">Medicines</a></li>
+                        <li><a href="file:///D:/mini%20project/nav.html(header)%20up%20page/healthblog.html">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Diagnostic Tests</a></li>
+                        <li><a href="#">Home Sample Collection</a></li>
+                        <li><a href="#">Doctor Consultation</a></li>
+                        <li><a href="#">Health Checkup Packages</a></li>
+                        <li><a href="#">Medicine Delivery</a></li>
+                        <li><a href="#">Health Records</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><i>🏢</i> 25/11 patel road perambur chennai</li>
+                        <li><i>📞</i> +91 9361640821</li>
+                        <li><i>✉️</i> veltechpharmacy.com</li>
+                        <li><i>🕒</i> Mon-Sun: 8AM - 10PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 VelTech Pharmacy. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Test data for different test modals
+        const testData = {
+            'complete-blood-count': {
+                title: 'Complete Blood Count (CBC)',
+                category: 'Blood Test',
+                sample: 'Blood',
+                report: '24 Hours',
+                price: '₹350',
+                homeCollection: 'Available',
+                image: 'https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                description: `<p>The Complete Blood Count (CBC) is a common blood test that evaluates your overall health and detects a wide range of disorders, including anemia, infection, and leukemia. It measures several components and features of your blood, including red blood cells, white blood cells, and platelets.</p>
+                <p>The CBC test provides important information about the types and numbers of cells in your blood, helping doctors check your general health status, screen for certain diseases, monitor medical conditions, and monitor medical treatment.</p>`,
+                includes: [
+                    'Red Blood Cell Count (RBC)',
+                    'White Blood Cell Count (WBC)',
+                    'Hemoglobin (Hgb)',
+                    'Hematocrit (Hct)',
+                    'Mean Corpuscular Volume (MCV)',
+                    'Mean Corpuscular Hemoglobin (MCH)',
+                    'Mean Corpuscular Hemoglobin Concentration (MCHC)',
+                    'Platelet Count',
+                    'Red Cell Distribution Width (RDW)'
+                ],
+                preparation: [
+                    'No fasting required for this test',
+                    'Continue taking your regular medications unless instructed otherwise by your doctor',
+                    'Wear loose clothing that allows easy access to your arm',
+                    'Drink plenty of water before the test to stay hydrated',
+                    'Inform the technician if you have a history of fainting during blood draws'
+                ],
+                expectations: [
+                    '<strong>During the Test:</strong> A healthcare professional will clean the area (usually the inside of your elbow) with an antiseptic wipe. An elastic band will be tied around your upper arm to make the veins more visible. A needle will be inserted into a vein to draw blood, which usually takes less than a minute.',
+                    '<strong>After the Test:</strong> A small bandage will be applied to the puncture site. You may experience minor bruising, which should fade in a few days. Results are typically available within 24 hours and will be accessible through our online portal.',
+                    '<strong>Interpreting Results:</strong> Your doctor will review the results with you. Abnormal results may indicate various conditions, but they don\'t necessarily mean you have a serious illness. Further testing may be required for diagnosis.'
+                ]
+            },
+            'thyroid-profile': {
+                title: 'Thyroid Profile (T3, T4, TSH)',
+                category: 'Hormone Test',
+                sample: 'Blood',
+                report: '24 Hours',
+                price: '₹600',
+                homeCollection: 'Available',
+                image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                description: `<p>The Thyroid Profile test measures the levels of thyroid hormones in your blood to assess how well your thyroid gland is functioning. It typically includes three main tests: Triiodothyronine (T3), Thyroxine (T4), and Thyroid Stimulating Hormone (TSH).</p>
+                <p>This test helps diagnose thyroid disorders like hypothyroidism (underactive thyroid), hyperthyroidism (overactive thyroid), Hashimoto's disease, Graves' disease, and thyroid cancer. Symptoms that may prompt this test include fatigue, weight changes, hair loss, temperature sensitivity, and mood changes.</p>`,
+                includes: [
+                    'Triiodothyronine (T3)',
+                    'Thyroxine (T4)',
+                    'Thyroid Stimulating Hormone (TSH)'
+                ],
+                preparation: [
+                    'Fasting for 8-12 hours is recommended',
+                    'Take your thyroid medications after the blood draw unless instructed otherwise',
+                    'Avoid biotin supplements for 48 hours before the test as they can interfere with results',
+                    'Inform your doctor about any medications you\'re taking'
+                ],
+                expectations: [
+                    '<strong>During the Test:</strong> A standard blood draw from your arm, taking about 5 minutes.',
+                    '<strong>After the Test:</strong> You can resume normal activities immediately. Results are typically available within 24-48 hours.',
+                    '<strong>Interpreting Results:</strong> Your doctor will explain what your specific hormone levels mean for your thyroid function and overall health.'
+                ]
+            },
+            'lipid-profile': {
+                title: 'Lipid Profile',
+                category: 'Cardiac Test',
+                sample: 'Blood',
+                report: '24 Hours',
+                price: '₹500',
+                homeCollection: 'Available',
+                image: 'https://images.unsplash.com/photo-1551601651-bc60f254d532?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                description: `<p>The Lipid Profile is a group of tests that measure the amount of cholesterol and triglycerides in your blood. These measurements give your doctor a quick snapshot of your potential risk for heart disease, stroke, and other diseases that involve blood vessels.</p>
+                <p>The test typically measures: Total cholesterol, Low-density lipoprotein (LDL) cholesterol ("bad" cholesterol), High-density lipoprotein (HDL) cholesterol ("good" cholesterol), and Triglycerides. Based on the results, your doctor can assess your cardiovascular risk and recommend lifestyle changes or medications if needed.</p>`,
+                includes: [
+                    'Total Cholesterol',
+                    'Low-Density Lipoprotein (LDL)',
+                    'High-Density Lipoprotein (HDL)',
+                    'Triglycerides',
+                    'VLDL Cholesterol',
+                    'Total Cholesterol/HDL Ratio'
+                ],
+                preparation: [
+                    'Fasting for 9-12 hours before the test (water is allowed)',
+                    'Avoid alcohol for 24 hours before the test',
+                    'Inform your doctor about any medications you\'re taking',
+                    'Avoid strenuous exercise for 24 hours before the test'
+                ],
+                expectations: [
+                    '<strong>During the Test:</strong> A standard blood draw from your arm.',
+                    '<strong>After the Test:</strong> You can eat immediately after the blood draw. Results are typically available within 24 hours.',
+                    '<strong>Interpreting Results:</strong> Your doctor will evaluate your lipid levels in the context of your overall health and risk factors for heart disease.'
+                ]
+            },
+            'blood-tests': {
+                title: 'Blood Tests Overview',
+                category: 'Blood Test',
+                sample: 'Blood',
+                report: 'Varies by test',
+                price: 'Starting from ₹200',
+                homeCollection: 'Available',
+                image: 'https://images.unsplash.com/photo-1581595219315-a187dd40c322?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                description: `<p>Blood tests are one of the most common types of diagnostic tests performed. They can help doctors check for certain diseases and conditions, assess how well organs are functioning, show how effective treatments are, and check for genetic conditions.</p>
+                <p>Common blood tests include: Complete Blood Count (CBC), Basic Metabolic Panel, Comprehensive Metabolic Panel, Lipid Panel, Thyroid Test, Cardiac Biomarkers, Sexually Transmitted Infection Tests, Coagulation Panel, DHEA-sulfate Serum Test, and C-reactive Protein Test.</p>
+                <p>Our lab offers a wide range of blood tests performed by experienced phlebotomists using modern equipment to ensure accurate results with minimal discomfort.</p>`
+            },
+            'diabetes-tests': {
+                title: 'Diabetes Tests Overview',
+                category: 'Diabetes Test',
+                sample: 'Blood',
+                report: 'Varies by test',
+                price: 'Starting from ₹300',
+                homeCollection: 'Available',
+                image: 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+                description: `<p>Diabetes tests help diagnose and monitor diabetes mellitus, a chronic condition that affects how your body processes blood sugar (glucose). Early detection and proper management are crucial to prevent complications.</p>
+                <p>Common diabetes tests include: Fasting Plasma Glucose Test, Random Blood Sugar Test, Oral Glucose Tolerance Test, Hemoglobin A1c Test, and Urine Glucose Test.</p>
+                <p>We offer comprehensive diabetes screening packages that include multiple tests for thorough evaluation, as well as regular monitoring tests for those already diagnosed with diabetes.</p>`
+            }
+        };
+        
+        // Blog data
+        const blogData = {
+            'importance-regular-checkups': {
+                title: 'Importance of Regular Health Checkups',
+                date: 'June 15, 2023',
+                author: 'By Dr. Priya Sharma',
+                image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+                content: `<p>Regular health checkups are essential for maintaining good health and preventing diseases. Many serious health conditions show no symptoms in their early stages, making routine screenings crucial for early detection and treatment.</p>
+                
+                <h4>Why Regular Checkups Matter</h4>
+                <p>1. <strong>Early Detection</strong>: Many life-threatening diseases like cancer, diabetes, and heart disease can be detected early through routine tests, significantly improving treatment outcomes.</p>
+                <p>2. <strong>Preventive Care</strong>: Regular checkups allow doctors to identify risk factors and recommend lifestyle changes before health problems develop.</p>
+                <p>3. <strong>Health Monitoring</strong>: For those with chronic conditions, regular tests help monitor the effectiveness of treatments and make necessary adjustments.</p>
+                <p>4. <strong>Cost Savings</strong>: Preventive care is often less expensive than treating advanced diseases that require hospitalization or surgery.</p>
+                
+                <h4>Recommended Tests by Age</h4>
+                <p><strong>20s-30s</strong>: Basic blood work, cholesterol screening, blood pressure checks, STD tests (if sexually active), and skin cancer screenings.</p>
+                <p><strong>40s</strong>: All of the above plus diabetes screening, mammograms (for women), prostate exams (for men), and colon cancer screening starting at 45.</p>
+                <p><strong>50s+</strong>: Additional tests like bone density scans, more frequent cancer screenings, and tests for age-related conditions.</p>
+                
+                <h4>Making the Most of Your Checkup</h4>
+                <p>- Prepare a list of questions or concerns for your doctor</p>
+                <p>- Bring a list of all medications and supplements you're taking</p>
+                <p>- Be honest about your lifestyle habits (diet, exercise, smoking, alcohol)</p>
+                <p>- Follow up on any recommended tests or specialist visits</p>
+                
+                <p>At VelTech Pharmacy, we offer comprehensive health checkup packages tailored to different age groups and risk factors. Our qualified healthcare professionals can help you determine which tests are right for you based on your medical history and family background.</p>`
+            },
+            'understanding-blood-tests': {
+                title: 'Understanding Your Blood Test Results',
+                date: 'May 28, 2023',
+                author: 'By Dr. Rajesh Kumar',
+                image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+                content: `<p>Blood tests provide crucial information about your health, but the results can be confusing if you don't understand what the numbers mean. This guide will help you interpret common blood test markers.</p>
+                
+                <h4>Complete Blood Count (CBC)</h4>
+                <p><strong>Hemoglobin</strong>: Low levels may indicate anemia (normal: 13.5-17.5 g/dL for men, 12.0-15.5 g/dL for women).</p>
+                <p><strong>White Blood Cells (WBC)</strong>: High levels may indicate infection (normal: 4,500-11,000 cells/mcL).</p>
+                <p><strong>Platelets</strong>: Help with blood clotting (normal: 150,000-450,000/mcL).</p>
+                
+                <h4>Basic Metabolic Panel</h4>
+                <p><strong>Glucose</strong>: High levels may indicate diabetes (normal fasting: 70-99 mg/dL).</p>
+                <p><strong>Calcium</strong>: Important for bone health (normal: 8.5-10.2 mg/dL).</p>
+                <p><strong>Electrolytes</strong>: Sodium, potassium, etc. help maintain fluid balance.</p>
+                
+                <h4>Liver Function Tests</h4>
+                <p><strong>ALT & AST</strong>: Elevated levels may indicate liver damage.</p>
+                <p><strong>Bilirubin</strong>: High levels may indicate liver disease or bile duct blockage.</p>
+                
+                <h4>What Abnormal Results Mean</h4>
+                <p>Abnormal results don't always mean you have a medical condition. Many factors can affect test results, including diet, medications, exercise, and even the time of day. Always discuss your results with your doctor who can interpret them in the context of your overall health.</p>
+                
+                <p>Our lab provides detailed reports with reference ranges and flags for abnormal values. Our doctors are available to explain your results and recommend next steps if needed.</p>`
+            }
+        };
+        
+        // Function to open test modal
+        function openTestModal(testId) {
+            const test = testData[testId] || testData['complete-blood-count'];
+            document.getElementById('modalTestTitle').textContent = test.title;
+            document.getElementById('modalTestCategory').textContent = test.category;
+            document.getElementById('modalTestSample').textContent = test.sample;
+            document.getElementById('modalTestReport').textContent = test.report;
+            document.getElementById('modalTestPrice').textContent = test.price;
+            document.getElementById('modalTestHomeCollection').textContent = test.homeCollection;
+            document.getElementById('modalTestImage').src = test.image;
+            document.getElementById('modalTestImage').alt = test.title;
+            document.getElementById('modalTestDescription').innerHTML = test.description;
+            
+            document.getElementById('testModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to open blog modal
+        function openBlogModal(blogId) {
+            const blog = blogData[blogId] || blogData['importance-regular-checkups'];
+            document.getElementById('modalBlogTitle').textContent = blog.title;
+            document.getElementById('modalBlogDate').textContent = blog.date;
+            document.getElementById('modalBlogAuthor').textContent = blog.author;
+            document.getElementById('modalBlogImage').src = blog.image;
+            document.getElementById('modalBlogImage').alt = blog.title;
+            document.getElementById('modalBlogContent').innerHTML = blog.content;
+            
+            document.getElementById('blogModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById('testModal').style.display = 'none';
+            document.getElementById('blogModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                closeModal();
+            }
+        }
+        
+        // Book test function
+        function bookTest(event, testName) {
+            event.stopPropagation(); // Prevent row click event from firing
+            showTestOverview(testName);
+        }
+        
+        // Book test from modal
+        function bookTestFromModal() {
+            const testName = document.getElementById('modalTestTitle').textContent;
+            showTestOverview(testName);
+        }
+        
+        // Show test overview page
+        function showTestOverview(testName) {
+            // Hide main content and show overview
+            document.querySelector('.main-content').style.display = 'none';
+            document.querySelector('.hero').style.display = 'none';
+            document.getElementById('testOverview').style.display = 'block';
+            
+            // Find the test data
+            let testId = '';
+            for (const [key, value] of Object.entries(testData)) {
+                if (value.title === testName) {
+                    testId = key;
+                    break;
+                }
+            }
+            
+            const test = testData[testId] || testData['complete-blood-count'];
+            
+            // Populate overview page
+            document.getElementById('overviewTestTitle').textContent = test.title;
+            document.getElementById('overviewTestDescription').innerHTML = test.description;
+            
+            // Populate includes list
+            const includesList = document.getElementById('overviewTestIncludes');
+            includesList.innerHTML = '';
+            if (test.includes) {
+                test.includes.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    includesList.appendChild(li);
+                });
+            }
+            
+            // Populate preparation list
+            const prepList = document.getElementById('overviewTestPreparation');
+            prepList.innerHTML = '';
+            if (test.preparation) {
+                test.preparation.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = item;
+                    prepList.appendChild(li);
+                });
+            }
+            
+            // Populate expectations
+            const expectationsDiv = document.getElementById('overviewTestExpectations');
+            expectationsDiv.innerHTML = '';
+            if (test.expectations) {
+                test.expectations.forEach(item => {
+                    const p = document.createElement('p');
+                    p.innerHTML = item;
+                    expectationsDiv.appendChild(p);
+                });
+            }
+            
+            // Set booking details
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('bookingDate').textContent = now.toLocaleDateString('en-IN', options);
+            
+            // Set random time slot
+            const hours = 9 + Math.floor(Math.random() * 8); // Between 9am and 5pm
+            const minutes = Math.random() > 0.5 ? '00' : '30';
+            document.getElementById('bookingTime').textContent = `${hours}:${minutes} - ${hours + 1}:${minutes}`;
+            
+            // Set booking amount
+            document.getElementById('bookingAmount').textContent = test.price;
+            
+            // Create confetti effect
+            createConfetti();
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#2c7be5', '#00d97e', '#e63757', '#6c757d', '#12263f'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Search functionality
+        document.querySelector('.search-box button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-box input').value.toLowerCase();
+            if (searchTerm.trim() === '') return;
+            
+            // In a real implementation, this would search your database
+            // For this demo, we'll just show an alert
+            alert(`Searching for tests related to: ${searchTerm}`);
+        });
+        
+        // Allow search on Enter key
+        document.querySelector('.search-box input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.search-box button').click();
+            }
+        });
+    </script>
+</body>
+</html>

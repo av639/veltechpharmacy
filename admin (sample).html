@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Admin Panel</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --accent-color: #ff5722;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #fff;
+            --blue: #2196F3;
+            --dark-blue: #1976D2;
+            --red: #f44336;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        /* Login Form Styles */
+        .login-container {
+            max-width: 400px;
+            margin: 5rem auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .login-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-blue {
+            background-color: var(--blue);
+        }
+        
+        .btn-blue:hover {
+            background-color: var(--dark-blue);
+        }
+        
+        .btn-red {
+            background-color: var(--red);
+        }
+        
+        .btn-red:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .prescription-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        
+        .prescription-list th, 
+        .prescription-list td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .prescription-list th {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .prescription-list tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .action-btn {
+            padding: 0.3rem 0.6rem;
+            margin-right: 0.5rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .view-btn {
+            background-color: var(--blue);
+            color: white;
+        }
+        
+        .reject-btn {
+            background-color: var(--red);
+            color: white;
+        }
+        
+        /* Prescription View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+        
+        .prescription-view {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .prescription-view img {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Response Form */
+        .response-form {
+            margin-top: 2rem;
+        }
+        
+        .medication-list {
+            margin-top: 1rem;
+        }
+        
+        .medication-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .medication-item input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .remove-med {
+            background-color: var(--red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0 0.5rem;
+            cursor: pointer;
+        }
+        
+        /* Status Messages */
+        .status-message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        
+        /* Security Badge */
+        .security-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .security-badge i {
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 2% auto;
+                padding: 1rem;
+            }
+            
+            .medication-item {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">VelTech Pharmacy</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Prescriptions</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#" id="logoutBtn" style="display: none;">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginContainer" class="login-container">
+            <h2 class="login-title">Admin Login</h2>
+            <div id="loginStatus" class="status-message"></div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter admin username" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" autocomplete="off">
+            </div>
+            <button id="loginBtn" class="btn">Login</button>
+        </div>
+        
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="admin-header">
+                <h2>Prescription Management</h2>
+                <div class="admin-actions">
+                    <button id="refreshBtn" class="btn btn-blue">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            
+            <div id="adminStatus" class="status-message"></div>
+            
+            <h3>Pending Prescriptions</h3>
+            <table class="prescription-list">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Patient Notes</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="prescriptionTable">
+                    <!-- Prescriptions will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Prescription View Modal -->
+    <div id="prescriptionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Prescription Details</h3>
+                <span class="close-btn">&times;</span>
+            </div>
+            <div id="modalStatus" class="status-message"></div>
+            <div id="prescriptionView" class="prescription-view">
+                <!-- Prescription image will appear here -->
+            </div>
+            <div id="patientNotesView">
+                <!-- Patient notes will appear here -->
+            </div>
+            
+            <div class="response-form">
+                <h4>Pharmacist Response</h4>
+                <div class="form-group">
+                    <label for="responseNotes">Notes</label>
+                    <textarea id="responseNotes" class="form-control" rows="4" placeholder="Enter your response to the patient..."></textarea>
+                </div>
+                
+                <h4>Suggested Medications</h4>
+                <div id="medicationList" class="medication-list">
+                    <div class="medication-item">
+                        <input type="text" placeholder="Medication name" class="med-name">
+                        <input type="text" placeholder="Dosage" class="med-dosage">
+                        <input type="number" placeholder="Qty" class="med-qty" min="1">
+                        <input type="number" placeholder="Price" class="med-price" min="0" step="0.01">
+                        <button class="remove-med"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <button id="addMedBtn" class="btn btn-blue" style="margin-top: 10px;">
+                    <i class="fas fa-plus"></i> Add Medication
+                </button>
+                
+                <div style="margin-top: 1.5rem; display: flex; gap: 10px;">
+                    <button id="approveBtn" class="btn">Approve Prescription</button>
+                    <button id="rejectBtn" class="btn btn-red">Reject Prescription</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Security Badge -->
+    <div class="security-badge">
+        <i class="fas fa-lock"></i>
+        <span>Secure Admin Portal</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const loginContainer = document.getElementById('loginContainer');
+            const adminPanel = document.getElementById('adminPanel');
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginStatus = document.getElementById('loginStatus');
+            const adminStatus = document.getElementById('adminStatus');
+            const prescriptionTable = document.getElementById('prescriptionTable');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const prescriptionModal = document.getElementById('prescriptionModal');
+            const closeBtn = document.querySelector('.close-btn');
+            const prescriptionView = document.getElementById('prescriptionView');
+            const patientNotesView = document.getElementById('patientNotesView');
+            const responseNotes = document.getElementById('responseNotes');
+            const medicationList = document.getElementById('medicationList');
+            const addMedBtn = document.getElementById('addMedBtn');
+            const approveBtn = document.getElementById('approveBtn');
+            const rejectBtn = document.getElementById('rejectBtn');
+            const modalStatus = document.getElementById('modalStatus');
+            
+            // Security Configuration
+            const ADMIN_CREDENTIALS = {
+                username: 'veltech_admin',
+                password: 'Secure@Pharmacy123', // In production, use proper hashing and server-side auth
+                token: 'vtp_' + Math.random().toString(36).substr(2, 16) + '_' + Date.now()
+            };
+            
+            // Prescription Data (in real app, this would be from a database)
+            let prescriptions = [];
+            let currentPrescription = null;
+            let authToken = null;
+            
+            // Initialize
+            checkAuth();
+            
+            // Event Listeners
+            loginBtn.addEventListener('click', handleLogin);
+            logoutBtn.addEventListener('click', handleLogout);
+            refreshBtn.addEventListener('click', loadPrescriptions);
+            closeBtn.addEventListener('click', closeModal);
+            addMedBtn.addEventListener('click', addMedicationField);
+            approveBtn.addEventListener('click', approvePrescription);
+            rejectBtn.addEventListener('click', rejectPrescription);
+            
+            // Click outside modal to close
+            window.addEventListener('click', function(event) {
+                if (event.target === prescriptionModal) {
+                    closeModal();
+                }
+            });
+            
+            // Functions
+            function checkAuth() {
+                authToken = localStorage.getItem('authToken');
+                if (authToken && authToken === ADMIN_CREDENTIALS.token) {
+                    showAdminPanel();
+                } else {
+                    showLogin();
+                }
+            }
+            
+            function handleLogin() {
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                if (!username || !password) {
+                    showStatus(loginStatus, 'Please enter both username and password', 'error');
+                    return;
+                }
+                
+                // Simulate server-side authentication
+                setTimeout(() => {
+                    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                        authToken = ADMIN_CREDENTIALS.token;
+                        localStorage.setItem('authToken', authToken);
+                        showAdminPanel();
+                        showStatus(loginStatus, 'Login successful!', 'success');
+                        
+                        // Clear sensitive data from memory after delay
+                        setTimeout(() => {
+                            passwordInput.value = '';
+                        }, 1000);
+                    } else {
+                        showStatus(loginStatus, 'Invalid credentials', 'error');
+                        passwordInput.value = '';
+                    }
+                }, 500);
+            }
+            
+            function handleLogout() {
+                // Clear authentication
+                authToken = null;
+                localStorage.removeItem('authToken');
+                
+                // Clear sensitive data
+                usernameInput.value = '';
+                passwordInput.value = '';
+                
+                // Reset UI
+                showLogin();
+            }
+            
+            function showLogin() {
+                loginContainer.style.display = 'block';
+                adminPanel.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            }
+            
+            function showAdminPanel() {
+                loginContainer.style.display = 'none';
+                adminPanel.style.display = 'block';
+                logoutBtn.style.display = 'block';
+                loadPrescriptions();
+            }
+            
+            function loadPrescriptions() {
+                // In a real app, this would fetch from an API
+                showStatus(adminStatus, 'Loading prescriptions...', 'success');
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    // Generate some sample prescriptions if empty
+                    if (prescriptions.length === 0) {
+                        for (let i = 1; i <= 5; i++) {
+                            prescriptions.push({
+                                id: 'RX' + (1000 + i),
+                                date: new Date(Date.now() - (i * 24 * 60 * 60 * 1000)).toLocaleString(),
+                                notes: i % 2 === 0 ? 'Need refill for blood pressure medication' : 'New prescription for antibiotics',
+                                status: 'Pending',
+                                image: i % 2 === 0 ? 'https://via.placeholder.com/500x700.png?text=Prescription+' + i : null,
+                                response: null,
+                                medications: []
+                            });
+                        }
+                    }
+                    
+                    renderPrescriptions();
+                    showStatus(adminStatus, 'Prescriptions loaded', 'success');
+                }, 800);
+            }
+            
+            function renderPrescriptions() {
+                prescriptionTable.innerHTML = '';
+                
+                prescriptions.forEach(pres => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${pres.id}</td>
+                        <td>${pres.date}</td>
+                        <td>${pres.notes || 'No notes'}</td>
+                        <td>${pres.status}</td>
+                        <td>
+                            <button class="action-btn view-btn" data-id="${pres.id}">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    `;
+                    prescriptionTable.appendChild(row);
+                    
+                    // Add event listener to view button
+                    row.querySelector('.view-btn').addEventListener('click', () => {
+                        viewPrescription(pres.id);
+                    });
+                });
+            }
+            
+            function viewPrescription(prescriptionId) {
+                currentPrescription = prescriptions.find(p => p.id === prescriptionId);
+                if (!currentPrescription) return;
+                
+                // Clear previous data
+                prescriptionView.innerHTML = '';
+                patientNotesView.innerHTML = '';
+                responseNotes.value = '';
+                medicationList.innerHTML = '';
+                
+                // Add default medication field
+                addMedicationField();
+                
+                // Display prescription image
+                if (currentPrescription.image) {
+                    const img = document.createElement('img');
+                    img.src = currentPrescription.image;
+                    img.alt = 'Prescription ' + currentPrescription.id;
+                    prescriptionView.appendChild(img);
+                } else {
+                    prescriptionView.innerHTML = '<p><i class="fas fa-file-prescription" style="font-size: 3rem; color: #4CAF50;"></i><br>No image available</p>';
+                }
+                
+                // Display patient notes
+                if (currentPrescription.notes) {
+                    patientNotesView.innerHTML = `<p><strong>Patient Notes:</strong> ${currentPrescription.notes}</p>`;
+                }
+                
+                // Display existing response if any
+                if (currentPrescription.response) {
+                    responseNotes.value = currentPrescription.response;
+                }
+                
+                // Display existing medications if any
+                if (currentPrescription.medications && currentPrescription.medications.length > 0) {
+                    medicationList.innerHTML = '';
+                    currentPrescription.medications.forEach(med => {
+                        addMedicationField(med.name, med.dosage, med.quantity, med.price);
+                    });
+                }
+                
+                // Open modal
+                prescriptionModal.style.display = 'block';
+            }
+            
+            function closeModal() {
+                prescriptionModal.style.display = 'none';
+                currentPrescription = null;
+            }
+            
+            function addMedicationField(name = '', dosage = '', qty = '', price = '') {
+                const medItem = document.createElement('div');
+                medItem.className = 'medication-item';
+                medItem.innerHTML = `
+                    <input type="text" placeholder="Medication name" class="med-name" value="${name}">
+                    <input type="text" placeholder="Dosage" class="med-dosage" value="${dosage}">
+                    <input type="number" placeholder="Qty" class="med-qty" min="1" value="${qty}">
+                    <input type="number" placeholder="Price" class="med-price" min="0" step="0.01" value="${price}">
+                    <button class="remove-med"><i class="fas fa-times"></i></button>
+                `;
+                medicationList.appendChild(medItem);
+                
+                // Add event listener to remove button
+                medItem.querySelector('.remove-med').addEventListener('click', function() {
+                    if (medicationList.children.length > 1) {
+                        medItem.remove();
+                    } else {
+                        showStatus(modalStatus, 'At least one medication is required', 'error');
+                    }
+                });
+            }
+            
+            function approvePrescription() {
+                if (!validateResponse()) return;
+                
+                // Get medications
+                const medications = [];
+                const medItems = medicationList.querySelectorAll('.medication-item');
+                
+                medItems.forEach(item => {
+                    const name = item.querySelector('.med-name').value.trim();
+                    const dosage = item.querySelector('.med-dosage').value.trim();
+                    const qty = parseInt(item.querySelector('.med-qty').value) || 1;
+                    const price = parseFloat(item.querySelector('.med-price').value) || 0;
+                    
+                    if (name) {
+                        medications.push({
+                            name,
+                            dosage,
+                            quantity: qty,
+                            price
+                        });
+                    }
+                });
+                
+                // Update prescription
+                currentPrescription.response = responseNotes.value.trim();
+                currentPrescription.medications = medications;
+                currentPrescription.status = 'Approved';
+                
+                // Update UI
+                renderPrescriptions();
+                showStatus(modalStatus, 'Prescription approved successfully', 'success');
+                
+                // Close modal after delay
+                setTimeout(() => {
+                    closeModal();
+                }, 1500);
+            }
+            
+            function rejectPrescription() {
+                if (!responseNotes.value.trim()) {
+                    showStatus(modalStatus, 'Please provide a reason for rejection', 'error');
+                    return;
+                }
+                
+                // Update prescription
+                currentPrescription.response = responseNotes.value.trim();
+                currentPrescription.medications = [];
+                currentPrescription.status = 'Rejected';
+                
+                // Update UI
+                renderPrescriptions();
+                showStatus(modalStatus, 'Prescription rejected', 'success');
+                
+                // Close modal after delay
+                setTimeout(() => {
+                    closeModal();
+                }, 1500);
+            }
+            
+            function validateResponse() {
+                // Check at least one medication is properly filled
+                let validMedications = 0;
+                const medItems = medicationList.querySelectorAll('.medication-item');
+                
+                medItems.forEach(item => {
+                    const name = item.querySelector('.med-name').value.trim();
+                    if (name) validMedications++;
+                });
+                
+                if (validMedications === 0) {
+                    showStatus(modalStatus, 'Please add at least one medication', 'error');
+                    return false;
+                }
+                
+                if (!responseNotes.value.trim()) {
+                    showStatus(modalStatus, 'Please enter your response notes', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            function showStatus(element, message, type) {
+                element.textContent = message;
+                element.className = `status-message ${type}`;
+                element.style.display = 'block';
+                
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Security enhancement: Clear sensitive data on page hide
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    passwordInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

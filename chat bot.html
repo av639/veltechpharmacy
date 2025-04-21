@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy</title>
+    <style>
+        /* Chatbot Icon Styles */
+        .chatbot-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-icon:hover {
+            background-color: #3e8e41;
+            transform: scale(1.1);
+        }
+        
+        .chatbot-icon i {
+            font-size: 24px;
+        }
+        
+        /* Chatbot Window Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .chatbot-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chatbot-close {
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        
+        .bot-message {
+            background-color: #e5e5ea;
+            color: #000;
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            background-color: #4CAF50;
+            color: white;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: white;
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .chatbot-input button {
+            margin-left: 10px;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        
+        .chatbot-input button:hover {
+            background-color: #3e8e41;
+        }
+        
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        .quick-reply {
+            background-color: #e5e5ea;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin: 5px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .quick-reply:hover {
+            background-color: #d1d1d6;
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Your website content goes here -->
+    
+    <!-- Chatbot Icon -->
+    <div class="chatbot-icon" id="chatbotIcon">
+        <i class="fas fa-comment-medical"></i>
+    </div>
+    
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chatbot-header">
+            <span>VelTech Pharmacy Assistant</span>
+            <span class="chatbot-close" id="chatbotClose">&times;</span>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="quick-replies" id="quickReplies">
+            <button class="quick-reply" onclick="sendQuickReply('How to order medicines?')">How to order?</button>
+            <button class="quick-reply" onclick="sendQuickReply('Do you have COVID vaccines?')">COVID vaccines</button>
+            <button class="quick-reply" onclick="sendQuickReply('What are your delivery options?')">Delivery options</button>
+            <button class="quick-reply" onclick="sendQuickReply('Prescription requirements')">Prescription info</button>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="userInput" placeholder="Type your question here..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatbotIcon = document.getElementById('chatbotIcon');
+        const chatbotContainer = document.getElementById('chatbotContainer');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const userInput = document.getElementById('userInput');
+        const quickReplies = document.getElementById('quickReplies');
+        
+        // Toggle chatbot visibility
+        chatbotIcon.addEventListener('click', function() {
+            chatbotContainer.style.display = 'flex';
+            addBotMessage("Hello! I'm your VelTech Pharmacy assistant. How can I help you today?");
+        });
+        
+        chatbotClose.addEventListener('click', function() {
+            chatbotContainer.style.display = 'none';
+        });
+        
+        // Send message function
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message !== '') {
+                addUserMessage(message);
+                userInput.value = '';
+                respondToMessage(message);
+            }
+        }
+        
+        // Handle quick replies
+        function sendQuickReply(message) {
+            addUserMessage(message);
+            respondToMessage(message);
+        }
+        
+        // Handle Enter key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Add user message to chat
+        function addUserMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'user-message');
+            messageElement.textContent = message;
+            chatbotMessages.appendChild(messageElement);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Add bot message to chat
+        function addBotMessage(message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'bot-message');
+            messageElement.textContent = message;
+            chatbotMessages.appendChild(messageElement);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Bot responses
+        function respondToMessage(message) {
+            // Simulate typing delay
+            setTimeout(() => {
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('order') || lowerMessage.includes('how to buy') || lowerMessage.includes('purchase')) {
+                    addBotMessage("To order medicines: 1) Search for your medication 2) Add to cart 3) Upload prescription if required 4) Proceed to checkout 5) Choose delivery option.");
+                } 
+                else if (lowerMessage.includes('covid') || lowerMessage.includes('vaccine')) {
+                    addBotMessage("Yes, we offer COVID-19 vaccines and boosters. You can book an appointment at our pharmacy locations or order for home vaccination service in select areas.");
+                } 
+                else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
+                    addBotMessage("We offer: - Standard delivery (3-5 days) - Express delivery (1-2 days) - Same-day delivery in metro areas (order by 2pm) - Store pickup available at all VelTech locations.");
+                } 
+                else if (lowerMessage.includes('prescription') || lowerMessage.includes('rx')) {
+                    addBotMessage("For prescription medicines, you'll need to upload a valid prescription from a licensed healthcare provider. We accept scanned copies or photos of prescriptions during checkout.");
+                } 
+                else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                    addBotMessage("Medicine prices vary based on brand, dosage, and quantity. You can check specific prices by searching for the product on our website. We also offer generic alternatives that are often more affordable.");
+                } 
+                else if (lowerMessage.includes('contact') || lowerMessage.includes('help')) {
+                    addBotMessage("You can contact our customer support at: - Phone: 1800-VELTECH (8358324) - Email: support@veltechpharmacy.com - Live chat on our website (9am-9pm daily)");
+                } 
+                else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
+                    addBotMessage("We accept returns of unopened medicines within 7 days of purchase with original packaging. Prescription medicines can only be returned if dispensed in error by us. Please contact customer support for assistance.");
+                } 
+                else if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || lowerMessage.includes('hey')) {
+                    addBotMessage("Hello! Welcome to VelTech Pharmacy. How can I assist you with your health needs today?");
+                } 
+                else {
+                    addBotMessage("I'm sorry, I didn't understand that. Could you please rephrase your question? Here are some things I can help with: ordering medicines, prescription info, delivery options, or COVID vaccines.");
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

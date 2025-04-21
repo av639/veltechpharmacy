@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use - VelTech Pharmacy</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+            filter: blur(2px);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #006666 0%, #008080 51%, #00A0A0 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 140px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background-image: url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60');
+            background-size: cover;
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        .terms-content {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            color: #008080;
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #008080;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background-color: rgba(0, 128, 128, 0.1);
+            border-left: 4px solid #008080;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: #fff;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00A0A0;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #008080;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            background-color: #006666;
+        }
+
+        /* Animation Effects */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated-section {
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                margin: 1rem auto;
+                border-radius: 0;
+            }
+            
+            .terms-content {
+                padding: 1.5rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-links a {
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="d:\mini project\homepage images.jpeg\WhatsApp_Image_2025-03-22_at_18.46.02_2c60d0a4-removebg-preview.png" alt="VelTech Pharmacy Logo" class="logo">
+            <h1>Terms of Use</h1>
+            <p>Please read these terms carefully before using our website</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="terms-content">
+            <section class="animated-section">
+                <h2>Acceptance of Terms</h2>
+                <p>By accessing or using the VelTech Pharmacy website ("the Site"), you agree to be bound by these Terms of Use ("Terms"). If you do not agree to all of these Terms, do not use this Site.</p>
+                <div class="highlight-box">
+                    <p>VelTech Pharmacy may revise and update these Terms at any time. Your continued usage of the Site will mean you accept those changes.</p>
+                </div>
+            </section>
+
+            <section class="animated-section delay-1">
+                <h2>Use of the Site</h2>
+                <p>The content of the Site, including text, graphics, images, and other material ("Content") is for informational purposes only. The Content is not intended to be a substitute for professional medical advice, diagnosis, or treatment.</p>
+                <p>You may use the Site only for lawful purposes and in accordance with these Terms. You agree not to use the Site:</p>
+                <ul>
+                    <li>In any way that violates any applicable federal, state, local, or international law or regulation</li>
+                    <li>To transmit, or procure the sending of, any advertising or promotional material without our prior written consent</li>
+                    <li>To impersonate or attempt to impersonate VelTech Pharmacy, a VelTech Pharmacy employee, another user, or any other person or entity</li>
+                    <li>To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the Site</li>
+                </ul>
+            </section>
+
+            <section class="animated-section delay-2">
+                <h2>Online Pharmacy Services</h2>
+                <p>VelTech Pharmacy provides online pharmacy services subject to the following conditions:</p>
+                <ol>
+                    <li><strong>Prescription Requirements:</strong> Certain medications require a valid prescription from a licensed healthcare provider. You agree to provide accurate and complete prescription information.</li>
+                    <li><strong>Accuracy of Information:</strong> You are responsible for ensuring that all information you provide, including medical and personal information, is accurate and complete.</li>
+                    <li><strong>Medication Use:</strong> You agree to use medications purchased from VelTech Pharmacy only as directed by your healthcare provider and in accordance with the product information.</li>
+                    <li><strong>Geographic Restrictions:</strong> VelTech Pharmacy services may not be available in all jurisdictions. We reserve the right to limit the availability of the Site or any portion of the Site to any person, geographic area, or jurisdiction at any time.</li>
+                </ol>
+            </section>
+
+            <section class="animated-section delay-3">
+                <h2>Intellectual Property Rights</h2>
+                <p>The Site and its entire contents, features, and functionality (including but not limited to all information, software, text, displays, images, video, and audio, and the design, selection, and arrangement thereof) are owned by VelTech Pharmacy, its licensors, or other providers of such material and are protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.</p>
+                <p>You must not:</p>
+                <ul>
+                    <li>Modify copies of any materials from this site</li>
+                    <li>Use any illustrations, photographs, video or audio sequences, or any graphics separately from the accompanying text</li>
+                    <li>Delete or alter any copyright, trademark, or other proprietary rights notices from copies of materials from this site</li>
+                </ul>
+            </section>
+
+            <section class="animated-section delay-4">
+                <h2>Disclaimer of Warranties</h2>
+                <p>YOUR USE OF THE SITE, ITS CONTENT, AND ANY SERVICES OR ITEMS OBTAINED THROUGH THE SITE IS AT YOUR OWN RISK. THE SITE, ITS CONTENT, AND ANY SERVICES OR ITEMS OBTAINED THROUGH THE SITE ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS, WITHOUT ANY WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED.</p>
+                <div class="highlight-box">
+                    <p>VELTECH PHARMACY DOES NOT WARRANT THAT THE SITE OR ANY OF ITS FUNCTIONS WILL BE UNINTERRUPTED OR ERROR-FREE, THAT DEFECTS WILL BE CORRECTED, OR THAT THE SITE OR THE SERVERS THAT MAKE IT AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
+                </div>
+            </section>
+
+            <section class="animated-section delay-4">
+                <h2>Limitation of Liability</h2>
+                <p>IN NO EVENT WILL VELTECH PHARMACY, ITS AFFILIATES, OR THEIR LICENSORS, SERVICE PROVIDERS, EMPLOYEES, AGENTS, OFFICERS, OR DIRECTORS BE LIABLE FOR DAMAGES OF ANY KIND, UNDER ANY LEGAL THEORY, ARISING OUT OF OR IN CONNECTION WITH YOUR USE, OR INABILITY TO USE, THE SITE, ANY WEBSITES LINKED TO IT, ANY CONTENT ON THE SITE OR SUCH OTHER WEBSITES, INCLUDING ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES.</p>
+            </section>
+
+            <section class="animated-section delay-4">
+                <h2>Governing Law and Jurisdiction</h2>
+                <p>All matters relating to the Site and these Terms of Use, and any dispute or claim arising therefrom or related thereto (in each case, including non-contractual disputes or claims), shall be governed by and construed in accordance with the internal laws of the State of [Your State] without giving effect to any choice or conflict of law provision or rule.</p>
+                <p>Any legal suit, action, or proceeding arising out of, or related to, these Terms of Use or the Site shall be instituted exclusively in the federal courts of the United States or the courts of the State of [Your State].</p>
+            </section>
+
+            <section class="animated-section delay-4">
+                <h2>Contact Information</h2>
+                <p>If you have any questions about these Terms of Use, please contact us at:</p>
+                <p>VelTech Pharmacy<br>
+                25/11 Healthcare Avenue<br>
+                Medical City, MC 600011<br>
+                Email: legal@veltechpharmacy.com<br>
+                Phone: 9361640821</p>
+                <p>Last Updated: January 1, 2025</p>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 VelTech Pharmacy. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Services</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Back to top button functionality
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animate sections when they come into view
+        const animateOnScroll = () => {
+            const sections = document.querySelectorAll('.animated-section');
+            
+            sections.forEach(section => {
+                const sectionPosition = section.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (sectionPosition < screenPosition) {
+                    section.style.opacity = '1';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Parallax effect for background
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.querySelector('body::before').style.backgroundPosition = `${x * 30}px ${y * 30}px`;
+        });
+
+        // Highlight current section in navigation
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.footer-links a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

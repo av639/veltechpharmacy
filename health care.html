@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Healthcare Essentials</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #0066cc;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #ffcc00;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: #ffcc00;
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .cart-icon:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff3333;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+        }
+        
+        /* Healthcare Page Styles */
+        .healthcare-hero {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528');
+            background-size: cover;
+            background-position: center;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 8px;
+        }
+        
+        .healthcare-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .healthcare-hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .category-title {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 32px;
+            color: #0066cc;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-name {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .product-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto;
+        }
+        
+        .add-to-cart:hover {
+            background-color: #0055aa;
+        }
+        
+        /* Cart Page Styles */
+        .cart-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin: 40px 0;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-title {
+            font-size: 24px;
+            color: #0066cc;
+        }
+        
+        .cart-items {
+            margin-bottom: 30px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f0f0;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .cart-item-image img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .cart-item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            color: #0066cc;
+            font-weight: bold;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #ddd;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            height: 30px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff3333;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 20px;
+            padding: 5px;
+        }
+        
+        .remove-item:hover {
+            color: #cc0000;
+        }
+        
+        .cart-summary {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-total {
+            font-weight: bold;
+            font-size: 18px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkout-btn {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .checkout-btn:hover {
+            background-color: #0055aa;
+        }
+        
+        /* Payment Page Styles */
+        .payment-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin: 40px 0;
+            max-width: 800px;
+        }
+        
+        .payment-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .payment-title {
+            font-size: 24px;
+            color: #0066cc;
+        }
+        
+        .payment-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .step.active .step-number {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .step-title {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .step.active .step-title {
+            color: #0066cc;
+            font-weight: bold;
+        }
+        
+        .step.completed .step-title {
+            color: #4CAF50;
+        }
+        
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 70%;
+            width: 60%;
+            height: 2px;
+            background-color: #ddd;
+            z-index: -1;
+        }
+        
+        .step.completed:not(:last-child)::after {
+            background-color: #4CAF50;
+        }
+        
+        .payment-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-method {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        
+        .payment-method:hover {
+            border-color: #0066cc;
+        }
+        
+        .payment-method.selected {
+            border-color: #0066cc;
+            background-color: #f0f8ff;
+        }
+        
+        .payment-method img {
+            height: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: #0066cc;
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .place-order-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .place-order-btn:hover {
+            background-color: #3e8e41;
+        }
+        
+        /* Order Confirmation */
+        .confirmation-container {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin: 40px 0;
+        }
+        
+        .confirmation-icon {
+            font-size: 80px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        .confirmation-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .confirmation-message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        
+        .continue-shopping {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .continue-shopping:hover {
+            background-color: #0055aa;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav ul li {
+                margin: 5px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .cart-item-info {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+            
+            .cart-item-quantity {
+                margin: 10px 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .healthcare-hero h1 {
+                font-size: 36px;
+            }
+            
+            .healthcare-hero p {
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .healthcare-hero h1 {
+                font-size: 28px;
+            }
+            
+            .category-title {
+                font-size: 24px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step:not(:last-child)::after {
+                display: none;
+            }
+            
+            .step {
+                margin-bottom: 20px;
+            }
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Vel<span>Tech</span> Pharmacy</div>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">Home</a></li>
+                    <li><a href="#" onclick="showPage('healthcare')">Healthcare</a></li>
+                    <li><a href="#" onclick="showPage('cart')">Cart</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon" onclick="showPage('cart')">
+                🛒
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Home Page (Hidden by default) -->
+    <div id="home-page" class="container" style="display: none;">
+        <div class="healthcare-hero">
+            <div>
+                <h1>Welcome to VelTech Pharmacy</h1>
+                <p>Your trusted source for quality healthcare products and medications</p>
+            </div>
+        </div>
+        <button onclick="showPage('healthcare')" class="add-to-cart" style="margin: 20px auto; display: block; max-width: 300px;">
+            Browse Healthcare Products
+        </button>
+    </div>
+
+    <!-- Healthcare Page -->
+    <div id="healthcare-page" class="container">
+        <div class="healthcare-hero">
+            <div>
+                <h1>Healthcare Essentials</h1>
+                <p>Find all your healthcare needs in one place, from first aid to baby care</p>
+            </div>
+        </div>
+        
+        <h2 class="category-title">Must-Have Health Essentials</h2>
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://m.media-amazon.com/images/I/71-uBViGV+L._SL1500_.jpg" alt="Digital Thermometer">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Digital Thermometer</h3>
+                    <p class="product-description">Fast and accurate temperature readings with easy-to-read display.</p>
+                    <div class="product-price">₹250</div>
+                    <button class="add-to-cart" onclick="addToCart(1, 'Digital Thermometer', 250, 'https://m.media-amazon.com/images/I/71-uBViGV+L._SL1500_.jpg')">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://m.media-amazon.com/images/I/71dI2W+WSpL._SL1080_.jpg" alt="First Aid Kit">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Premium First Aid Kit</h3>
+                    <p class="product-description">Comprehensive 150-piece first aid kit for home, car, or travel with essential medical supplies.</p>
+                    <div class="product-price">₹1,299</div>
+                    <button class="add-to-cart" onclick="addToCart(2, 'Premium First Aid Kit', 1299, 'https://m.media-amazon.com/images/I/71dI2W+WSpL._SL1080_.jpg')">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://th.bing.com/th/id/OIP.KuZm_y7utgJqC6ldMM7obQHaHa?rs=1&pid=ImgDetMain" alt="Hand Sanitizer">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name"> Hand Sanitizer</h3>
+                    <p class="product-description">Kills 99.9% germs instantly without water. 500ml bottle with moisturizers to keep hands soft.</p>
+                    <div class="product-price">₹199</div>
+                    <button class="add-to-cart" onclick="addToCart(3, 'Dettol Hand Sanitizer', 199, 'https://th.bing.com/th/id/OIP.KuZm_y7utgJqC6ldMM7obQHaHa?rs=1&pid=ImgDetMain')">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://m.media-amazon.com/images/I/41Y3Xrc0rJS._UL1000_.jpg" alt="N95 Face Masks">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">N95 Face Masks</h3>
+                    <p class="product-description">Protective, breathable, and reusable masks for daily use. Pack of 10.</p>
+                    <div class="product-price">₹500</div>
+                    <button class="add-to-cart" onclick="addToCart(4, 'N95 Face Masks', 500, 'https://m.media-amazon.com/images/I/41Y3Xrc0rJS._UL1000_.jpg')">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category-title">Baby Care Essentials</h2>
+        <div class="products-grid">
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://5.imimg.com/data5/SELLER/Default/2022/5/AE/FD/SY/15881622/pampers-all-round-protection-pants-medium-size-baby-diapers-m-76-count-lotion-with-aloe-vera-1000x1000.jpg" alt="Baby Diapers">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Pampers Baby Diapers</h3>
+                    <p class="product-description">Super absorbent diapers for babies with wetness indicator. Size M (44 count).</p>
+                    <div class="product-price">₹899</div>
+                    <button class="add-to-cart" onclick="addToCart(5, 'Pampers Baby Diapers', 899, 'https://5.imimg.com/data5/SELLER/Default/2022/5/AE/FD/SY/15881622/pampers-all-round-protection-pants-medium-size-baby-diapers-m-76-count-lotion-with-aloe-vera-1000x1000.jpg')">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://th.bing.com/th/id/OIP.k5A7KUGsw32z9cdyW_Az-AHaHL?rs=1&pid=ImgDetMain" alt="Baby Powder">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Johnson's Baby Powder</h3>
+                    <p class="product-description">Gentle talc-free powder that keeps baby's skin soft and dry. 400g bottle.</p>
+                    <div class="product-price">₹225</div>
+                    <button class="add-to-cart" onclick="addToCart(6, 'Johnson\'s Baby Powder', 225, 'https://th.bing.com/th/id/OIP.k5A7KUGsw32z9cdyW_Az-AHaHL?rs=1&pid=ImgDetMain')">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 7 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://www.huggies.com.au/-/media/Project/HuggiesAU/Products/Product-Category/Wipes/Thick-Wipes-Fragrance-Free/Huggies-FF-Wipes_80_3D_wipe.png?h=500&w=500" alt="Baby Wipes">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Huggies Baby Wipes</h3>
+                    <p class="product-description">Alcohol-free, gentle cleansing wipes for baby's delicate skin. Pack of 72 wipes.</p>
+                    <div class="product-price">₹249</div>
+                    <button class="add-to-cart" onclick="addToCart(7, 'Huggies Baby Wipes', 249, 'https://www.huggies.com.au/-/media/Project/HuggiesAU/Products/Product-Category/Wipes/Thick-Wipes-Fragrance-Free/Huggies-FF-Wipes_80_3D_wipe.png?h=500&w=500')">Add to Cart</button>
+                </div>
+            </div>
+            
+            <!-- Product 8 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://cdn.shopclues.com/images/detailed/30221/8654284077332594BPHIM000151himalayababykit14205609241431512589_1452581803.jpg" alt="Baby Kit">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Baby Care Kit</h3>
+                    <p class="product-description">Complete baby care set including nail clippers, brush, comb, and more.</p>
+                    <div class="product-price">₹599</div>
+                    <button class="add-to-cart" onclick="addToCart(8, 'Baby Care Kit', 599, 'https://cdn.shopclues.com/images/detailed/30221/8654284077332594BPHIM000151himalayababykit14205609241431512589_1452581803.jpg')">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart-page" class="container" style="display: none;">
+        <div class="cart-container">
+            <div class="cart-header">
+                <h2 class="cart-title">Your Shopping Cart</h2>
+                <button onclick="showPage('healthcare')" class="add-to-cart">Continue Shopping</button>
+            </div>
+            
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be dynamically inserted here -->
+                <p id="empty-cart-message">Your cart is empty</p>
+            </div>
+            
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span id="cart-shipping">₹50</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span id="cart-total">₹50</span>
+                </div>
+                
+                <button class="checkout-btn" onclick="showPage('payment')">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="payment-page" class="container" style="display: none;">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h2 class="payment-title">Checkout</h2>
+            </div>
+            
+            <div class="payment-steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Cart</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Payment</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Confirmation</div>
+                </div>
+            </div>
+            
+            <div class="payment-section">
+                <h3 class="section-title">Shipping Information</h3>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-input" id="full-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" class="form-input" id="address" placeholder="Enter your address" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-input" id="city" placeholder="Enter your city" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pincode</label>
+                        <input type="text" class="form-input" id="pincode" placeholder="Enter pincode" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="Enter your phone number" required>
+                </div>
+            </div>
+            
+            <div class="payment-section">
+                <h3 class="section-title">Payment Method</h3>
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="selectPaymentMethod('credit-card')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/179/179457.png" alt="Credit Card">
+                        <div>Credit Card</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('debit-card')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/179/179457.png" alt="Debit Card">
+                        <div>Debit Card</div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/825/825454.png" alt="UPI">
+                        <div>UPI</div>
+                    </div>
+                </div>
+                
+                <div id="credit-card-form" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" id="card-number" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" id="expiry-date" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-input" id="cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Name on Card</label>
+                        <input type="text" class="form-input" id="card-name" placeholder="Enter name as on card" required>
+                    </div>
+                </div>
+                
+                <div id="upi-form" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">UPI ID</label>
+                        <input type="text" class="form-input" id="upi-id" placeholder="yourname@upi" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="payment-section">
+                <h3 class="section-title">Order Summary</h3>
+                <div id="order-summary">
+                    <!-- Order items will be dynamically inserted here -->
+                </div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="order-subtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span id="order-shipping">₹50</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span id="order-total">₹50</span>
+                </div>
+            </div>
+            
+            <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Page -->
+    <div id="confirmation-page" class="container" style="display: none;">
+        <div class="confirmation-container">
+            <div class="confirmation-icon">✓</div>
+            <h2 class="confirmation-title">Order Confirmed!</h2>
+            <p class="confirmation-message">Thank you for your purchase. Your order has been placed successfully.</p>
+            <p class="confirmation-message">Order ID: <strong id="order-id">VT-123456</strong></p>
+            <button class="continue-shopping" onclick="showPage('healthcare')">Continue Shopping</button>
+        </div>
+    </div>
+
+    <script>
+        // Cart data
+        let cart = [];
+        let currentPage = 'healthcare';
+        let selectedPaymentMethod = null;
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage(currentPage);
+            loadCart();
+            updateCartCount();
+        });
+        
+        // Page navigation
+        function showPage(page) {
+            // Hide all pages
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('healthcare-page').style.display = 'none';
+            document.getElementById('cart-page').style.display = 'none';
+            document.getElementById('payment-page').style.display = 'none';
+            document.getElementById('confirmation-page').style.display = 'none';
+            
+            // Show the selected page
+            document.getElementById(page + '-page').style.display = 'block';
+            currentPage = page;
+            
+            // Update specific pages when shown
+            if (page === 'cart') {
+                updateCartPage();
+            } else if (page === 'payment') {
+                updatePaymentPage();
+            }
+        }
+        
+        // Show toast notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        // Cart functionality
+        function addToCart(id, name, price, image) {
+            // Check if item already exists in cart
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+            
+            saveCart();
+            updateCartCount();
+            
+            // Show a quick confirmation
+            alert(name + ' added to cart!');
+        }
+        
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            updateCartCount();
+            updateCartPage();
+        }
+        
+        function updateQuantity(id, newQuantity) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity = parseInt(newQuantity) || 1;
+                if (item.quantity < 1) item.quantity = 1;
+                saveCart();
+                updateCartCount();
+                updateCartPage();
+            }
+        }
+        
+        function saveCart() {
+            localStorage.setItem('veltech-pharmacy-cart', JSON.stringify(cart));
+        }
+        
+        function loadCart() {
+            const savedCart = localStorage.getItem('veltech-pharmacy-cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        }
+        
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+        
+        function calculateCartTotal() {
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 50;
+            const total = subtotal + shipping;
+            
+            return {
+                subtotal: subtotal,
+                shipping: shipping,
+                total: total
+            };
+        }
+        
+        // Cart page updates
+        function updateCartPage() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const totals = calculateCartTotal();
+            
+            if (cart.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                cartItemsContainer.innerHTML = '';
+            } else {
+                emptyCartMessage.style.display = 'none';
+                
+                let itemsHTML = '';
+                cart.forEach(item => {
+                    itemsHTML += `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-image">
+                                    <img src="${item.image}" alt="${item.name}">
+                                </div>
+                                <div>
+                                    <div class="cart-item-name">${item.name}</div>
+                                    <div class="cart-item-price">₹${item.price}</div>
+                                </div>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" 
+                                    onchange="updateQuantity(${item.id}, this.value)">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                                <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItemsContainer.innerHTML = itemsHTML;
+            }
+            
+            // Update totals
+            document.getElementById('cart-subtotal').textContent = `₹${totals.subtotal}`;
+            document.getElementById('cart-shipping').textContent = `₹${totals.shipping}`;
+            document.getElementById('cart-total').textContent = `₹${totals.total}`;
+        }
+        
+        // Payment page updates
+        function updatePaymentPage() {
+            const orderSummaryContainer = document.getElementById('order-summary');
+            const totals = calculateCartTotal();
+            
+            let summaryHTML = '';
+            cart.forEach(item => {
+                summaryHTML += `
+                    <div class="summary-row">
+                        <span>${item.name} (${item.quantity})</span>
+                        <span>₹${item.price * item.quantity}</span>
+                    </div>
+                `;
+            });
+            
+            orderSummaryContainer.innerHTML = summaryHTML;
+            
+            // Update totals
+            document.getElementById('order-subtotal').textContent = `₹${totals.subtotal}`;
+            document.getElementById('order-shipping').textContent = `₹${totals.shipping}`;
+            document.getElementById('order-total').textContent = `₹${totals.total}`;
+        }
+        
+        function selectPaymentMethod(method) {
+            // Remove selected class from all methods
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked method
+            event.currentTarget.classList.add('selected');
+            
+            // Show the appropriate form
+            document.getElementById('credit-card-form').style.display = 'none';
+            document.getElementById('upi-form').style.display = 'none';
+            
+            if (method === 'credit-card' || method === 'debit-card') {
+                document.getElementById('credit-card-form').style.display = 'block';
+            } else if (method === 'upi') {
+                document.getElementById('upi-form').style.display = 'block';
+            }
+        }
+        
+        function placeOrder() {
+            // Generate a random order ID
+            const orderId = 'VT-' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('order-id').textContent = orderId;
+            
+            // Clear the cart
+            cart = [];
+            saveCart();
+            updateCartCount();
+            
+            // Show confirmation page
+            showPage('confirmation');
+        }
+    </script>
+</body>
+</html>

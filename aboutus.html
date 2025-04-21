@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - VelTech Pharmacy</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        /* About Section */
+        .about-section {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 80px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .about-section {
+                flex-direction: column;
+            }
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: #2a7f62;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background-color: #2a7f62;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Mission/Vision Section */
+        .mv-section {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .mv-section {
+                flex-direction: column;
+            }
+        }
+
+        .mv-card {
+            flex: 1;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .mv-icon {
+            font-size: 3rem;
+            color: #2a7f62;
+            margin-bottom: 20px;
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .team-info {
+            padding: 20px;
+        }
+
+        .team-name {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #2a7f62;
+        }
+
+        .team-position {
+            color: #777;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Partners Section */
+        .partners-section {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .partners-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+            align-items: center;
+        }
+
+        .partner-logo {
+            height: 80px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(rgba(42, 127, 98, 0.9), rgba(42, 127, 98, 0.9)), url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 50px auto 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial {
+            min-width: 100%;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #2a7f62;
+        }
+
+        .slider-nav {
+            margin-top: 30px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            background: #ddd;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: #2a7f62;
+        }
+
+        /* Footer */
+        footer {
+            background: #2a7f62;
+            color: white;
+            padding: 50px 0 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #d4edda;
+        }
+
+        .social-links {
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #d4edda;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #2a7f62;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #218838;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>About VelTech Pharmacy</h1>
+            <p class="tagline">Your Trusted Healthcare Partner Since 2010</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="VelTech Pharmacy Store">
+            </div>
+            <div class="about-content">
+                <h2>Our Story</h2>
+                <p>Founded in 2010, VelTech Pharmacy has grown from a single neighborhood pharmacy to a trusted healthcare provider with multiple locations across the city. Our journey began with a simple mission: to provide personalized, compassionate care to our community.</p>
+                <p>Today, we're proud to serve thousands of customers with our comprehensive pharmaceutical services, health consultations, and wellness products. Our team of licensed pharmacists and healthcare professionals are dedicated to your wellbeing.</p>
+                <p>At VelTech, we believe in going beyond just dispensing medications. We take the time to understand your health needs and provide tailored solutions to help you achieve your best health.</p>
+            </div>
+        </section>
+
+        <!-- Mission/Vision Section -->
+        <section class="mv-section">
+            <div class="mv-card">
+                <div class="mv-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Our Mission</h3>
+                <p>To provide exceptional pharmaceutical care through personalized service, clinical expertise, and innovative solutions that improve health outcomes for our patients and community.</p>
+            </div>
+            <div class="mv-card">
+                <div class="mv-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Our Vision</h3>
+                <p>To be the most trusted healthcare partner in our community, recognized for our commitment to patient care, health education, and advancing the practice of pharmacy.</p>
+            </div>
+            <div class="mv-card">
+                <div class="mv-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Our Values</h3>
+                <p>Compassion, Integrity, Excellence, Innovation, and Community. These core values guide every decision we make and every interaction we have with our patients.</p>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2>Meet Our Team</h2>
+            <p>Our dedicated team of healthcare professionals is committed to providing you with the highest quality care and service.</p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Dr. Rajesh Kumar" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="team-name">Dr. Rajesh Kumar</h3>
+                        <p class="team-position">Chief Pharmacist</p>
+                        <p>With over 15 years of experience, Dr. Kumar leads our pharmaceutical team with expertise and care.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Priya Sharma" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="team-name">Priya Sharma</h3>
+                        <p class="team-position">Clinical Pharmacist</p>
+                        <p>Specializing in chronic disease management, Priya provides personalized medication therapy.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1579684453423-f84349ef60b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Arjun Patel" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="team-name">Arjun Patel</h3>
+                        <p class="team-position">Pharmacy Manager</p>
+                        <p>Arjun ensures our pharmacy operations run smoothly while maintaining our high standards.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Neha Gupta" class="team-photo">
+                    <div class="team-info">
+                        <h3 class="team-name">Neha Gupta</h3>
+                        <p class="team-position">Wellness Consultant</p>
+                        <p>Neha provides nutrition and wellness advice to complement your pharmaceutical care.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners Section -->
+        <section class="partners-section">
+            <h2>Our Trusted Partners</h2>
+            <p>We collaborate with leading healthcare organizations to bring you the best products and services.</p>
+            
+            <div class="partners-grid">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Logo_of_Novartis.svg/1200px-Logo_of_Novartis.svg.png" alt="Novartis" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Pfizer_%282021%29.svg/1200px-Pfizer_%282021%29.svg.png" alt="Pfizer" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Sun_Pharmaceutical_logo.svg/1200px-Sun_Pharmaceutical_logo.svg.png" alt="Sun Pharma" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Cipla_logo.svg/1200px-Cipla_logo.svg.png" alt="Cipla" class="partner-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Abbott_logo.svg/1200px-Abbott_logo.svg.png" alt="Abbott" class="partner-logo">
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <h2>VelTech By The Numbers</h2>
+            <p>Our commitment to excellence in numbers</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="years-count">0</div>
+                    <div class="stat-label">Years Serving</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="customers-count">0</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="locations-count">0</div>
+                    <div class="stat-label">Locations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="products-count">0</div>
+                    <div class="stat-label">Health Products</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials-section">
+            <h2>What Our Customers Say</h2>
+            <p>Hear from people who have experienced the VelTech difference</p>
+            
+            <div class="testimonials-slider">
+                <div class="testimonials-container" id="testimonials-container">
+                    <div class="testimonial">
+                        <p class="testimonial-text">"VelTech Pharmacy has been my family's trusted healthcare partner for years. Their personalized service and expert advice make all the difference in managing my mother's medications."</p>
+                        <p class="testimonial-author">- Ramesh Iyer, Loyal Customer</p>
+                    </div>
+                    <div class="testimonial">
+                        <p class="testimonial-text">"The staff at VelTech goes above and beyond. When I was sick, they delivered my medication to my home. That level of care is rare these days."</p>
+                        <p class="testimonial-author">- Sunita Mehta, Customer Since 2012</p>
+                    </div>
+                    <div class="testimonial">
+                        <p class="testimonial-text">"As a physician, I confidently refer my patients to VelTech because I know they'll receive accurate information and proper counseling about their medications."</p>
+                        <p class="testimonial-author">- Dr. Anil Joshi, Local Physician</p>
+                    </div>
+                </div>
+                <div class="slider-nav">
+                    <span class="slider-dot active" data-index="0"></span>
+                    <span class="slider-dot" data-index="1"></span>
+                    <span class="slider-dot" data-index="2"></span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">VelTech Pharmacy</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Home</a>
+                <a href="#" class="footer-link">Services</a>
+                <a href="#" class="footer-link">Products</a>
+                <a href="#" class="footer-link">Health Tips</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p class="copyright">© 2025 VelTech Pharmacy. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animated counter for stats
+            animateCounters();
+            
+            // Testimonial slider
+            setupTestimonialSlider();
+            
+            // Back to top button
+            setupBackToTop();
+        });
+
+        // Animate counter numbers
+        function animateCounters() {
+            const yearsElement = document.getElementById('years-count');
+            const customersElement = document.getElementById('customers-count');
+            const locationsElement = document.getElementById('locations-count');
+            const productsElement = document.getElementById('products-count');
+            
+            const targetYears = 13;
+            const targetCustomers = 12500;
+            const targetLocations = 8;
+            const targetProducts = 3500;
+            
+            const duration = 2000; // Animation duration in ms
+            const interval = 20; // Update interval in ms
+            
+            animateCounter(yearsElement, 0, targetYears, duration, interval);
+            animateCounter(customersElement, 0, targetCustomers, duration, interval);
+            animateCounter(locationsElement, 0, targetLocations, duration, interval);
+            animateCounter(productsElement, 0, targetProducts, duration, interval);
+        }
+        
+        function animateCounter(element, start, end, duration, interval) {
+            let current = start;
+            const increment = (end - start) / (duration / interval);
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    clearInterval(timer);
+                    current = end;
+                }
+                element.textContent = Math.floor(current).toLocaleString();
+            }, interval);
+        }
+        
+        // Testimonial slider
+        function setupTestimonialSlider() {
+            const container = document.getElementById('testimonials-container');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentIndex = 0;
+            
+            // Set click events for dots
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    goToTestimonial(index);
+                });
+            });
+            
+            // Auto-rotate testimonials
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % 3;
+                goToTestimonial(currentIndex);
+            }, 5000);
+            
+            function goToTestimonial(index) {
+                container.style.transform = `translateX(-${index * 100}%)`;
+                
+                // Update active dot
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[index].classList.add('active');
+                
+                currentIndex = index;
+            }
+        }
+        
+        // Back to top button
+        function setupBackToTop() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('active');
+                } else {
+                    backToTopBtn.classList.remove('active');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+    </script>
+</body>
+</html>

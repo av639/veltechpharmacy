@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offers </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://www.shutterstock.com/shutterstock/photos/559549645/display_1500/stock-vector-online-pharmacy-concept-banner-with-text-place-vector-medical-illustration-559549645.jpg') no-repeat center center/cover;
+            height: 200vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .offer {
+            display: flex;
+            align-items: center;
+            background: #eff2f5;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        .offer:hover {
+            transform: scale(1.05);
+        }
+        .offer img {
+            width: 120px;
+            height: 120px;
+            margin-right: 15px;
+            border-radius: 50%;
+        }
+        .offer-content {
+            flex: 1;
+        }
+        .code {
+            background: #4caf50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center;">
+            <h2>Offers</h2>
+        </div>
+        <p>PharmEasy is one of India's leading online healthcare platforms, offering great savings on medicines and healthcare products. Get the best deals and discounts today!
+        Get the best deals on medicines with our exclusive offers! Enjoy great discounts, special combo packs, and cashback on your favorite healthcare products. Shop now for fast delivery and quality-assured medicines at unbeatable prices. Stay healthy and save more with our limited-time offers!</p>
+        <div class="offer">
+            <img src="https://www.exchange.healthcare/images/posts/feature-10-essential-health-benefits.png" alt="Offer">
+            <div class="offer-content">
+                <h3>Up to 24% OFF on healthcare essentials</h3>
+                <p>Coupon applicable on orders above Rs. 750.</p>
+                <span class="code" onclick="copyCode('24STREAKS')">24STREAKS</span>
+            </div>
+        </div>
+
+        <div class="offer">
+            <img src="https://www.who.int/images/default-source/departments/essential-medicines/substandard-and-falsified/other.tmb-1920v.jpg?sfvrsn=91465812_3" alt="Offer">
+            <div class="offer-content">
+                <h3>Get 20% OFF on medicines</h3>
+                <p>On Medicine & Healthcare</p>
+                <span class="code" onclick="copyCode('20CHCK')">20CHCK</span>
+            </div>
+        </div>
+
+        <div class="offer">
+            <img src="https://healthcarediagnosticcliniclab.com/wp-content/uploads/2023/02/1602429275_DLC-05-e1677135176187.jpg" alt="Offer">
+            <div class="offer-content">
+                <h3>Flat Rs. 2800 OFF on Full Body Health Checkup</h3>
+                <p>Ensure your well-being with this offer.</p>
+                <span class="code" onclick="copyCode('HEALTH2800')">HEALTH2800</span>
+            </div>
+        </div>
+
+        <div class="offer">
+            <img src="https://cdn01.pharmeasy.in/dam/products_otc/F14789/everherb-diabetic-care-blood-sugar-control-bottle-of-60-6.1-1641788921.jpg" alt="Offer">
+            <div class="offer-content">
+                <h3>Extra 10% Off on Everherb, Liveasy or PharmEasy products</h3>
+                <p>Discount on selected brands.</p>
+                <span class="code" onclick="copyCode('EXTRA10')">EXTRA10</span>
+            </div>
+        </div>
+
+        <div class="offer">
+            <img src="https://tricksrecharge.com/wp-content/uploads/2021/07/IMG_20210718_153118.webp" alt="Offer">
+            <div class="offer-content">
+                <h3>15% OFF on first medicine order</h3>
+                <p>New users get additional savings.</p>
+                <span class="code" onclick="copyCode('NEW15')">NEW15</span>
+            </div>
+        </div>
+
+        <div class="offer">
+            <img src="https://th.bing.com/th/id/OIP._OXsjZ74r-yXZCYo4beN-QHaE3?rs=1&pid=ImgDetMain" alt="Offer">
+            <div class="offer-content">
+                <h3>Save Rs. 500 on Diagnostic Tests</h3>
+                <p>Applicable on lab tests and health packages.</p>
+                <span class="code" onclick="copyCode('DIAG500')">DIAG500</span>
+            </div>
+        </div>
+
+        <div class="offer">
+            <img src="https://th.bing.com/th/id/OIP.W92ToyOmFggOIj5lJrsXdQHaCs?rs=1&pid=ImgDetMain" alt="Offer">
+            <div class="offer-content">
+                <h3>Free Shipping on Orders Above Rs. 1000</h3>
+                <p>Save on delivery costs with this exclusive offer.</p>
+                <span class="code" onclick="copyCode('FREESHIP')">FREESHIP</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(code) {
+            navigator.clipboard.writeText(code);
+            alert("Coupon Code " + code + " copied to clipboard!");
+        }
+    </script>
+</body>
+</html>

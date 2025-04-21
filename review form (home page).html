@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Veltech Pharmacy - Product Reviews</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #0056b3;
+            color: white;
+            border-radius: 5px;
+        }
+        .reviews-section {
+            margin-bottom: 40px;
+        }
+        .review-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .reviewer-name {
+            font-weight: bold;
+            color: #0056b3;
+        }
+        .review-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .rating {
+            color: #FFD700;
+            margin: 10px 0;
+        }
+        .review-text {
+            margin-bottom: 10px;
+        }
+        .product-name {
+            font-style: italic;
+            color: #007bff;
+        }
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+        }
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            padding: 20px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .header {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Veltech Pharmacy Customer Reviews</h1>
+            <p>Share your experience with our products and services</p>
+        </div>
+        
+        <div class="reviews-section">
+            <h2>Customer Feedback</h2>
+            <div id="reviews-container">
+                <div class="loading">Loading reviews...</div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Submit Your Review</h2>
+            <p>Your feedback helps us improve our services</p>
+            <div class="google-form-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfJfxc87mxibBuBl83KSBXxAAsq3MCJcLieu8dFutUPMDr0kg/viewform?embedded=true" 
+                        width="100%" 
+                        height="1195" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0">
+                    Loading...
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchReviewsFromGoogleSheets();
+            
+            function fetchReviewsFromGoogleSheets() {
+                // Extract Sheet ID from your URL: https://docs.google.com/spreadsheets/d/1BhbWFyB8pGfOi142t1AsSqbRoQcrDi1Aqx037zc6iY0/edit
+                const SHEET_ID = '1BhbWFyB8pGfOi142t1AsSqbRoQcrDi1Aqx037zc6iY0';
+                const API_KEY = 'AIzaSyCnKPmzvZzst6x9dZE_-d1l4EDeaS6_yDY';
+                // Use the specific sheet name or ID from your URL (#gid=223044166)
+                const SHEET_NAME = 'Form Responses 1'; // Default name, or use 'Sheet1' or the specific gid
+                
+                fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (!data.values || data.values.length < 2) {
+                            showNoReviews();
+                            return;
+                        }
+                        
+                        const reviews = convertSheetDataToReviews(data.values);
+                        displayReviews(reviews);
+                    })
+                    .catch(error => {
+                        console.error('Error loading reviews:', error);
+                        showError();
+                        // Fallback to mock data if API fails
+                        displayReviews(getMockReviews());
+                    });
+            }
+            
+            function convertSheetDataToReviews(sheetData) {
+                // Skip header row
+                const rows = sheetData.slice(1);
+                return rows.map(row => {
+                    // Adjust these indices based on your form's column order
+                    // Typically: Timestamp (0), Name (1), Email (2), Product (3), Rating (4), Review (5)
+                    return {
+                        timestamp: row[0],
+                        name: row[1],
+                        email: row[2],
+                        product: row[3],
+                        rating: parseFloat(row[4]),
+                        review: row[5]
+                    };
+                });
+            }
+            
+            function getMockReviews() {
+                return [
+                    {
+                        timestamp: "2023-06-15 10:30:00",
+                        name: "Rahul Sharma",
+                        email: "rahul@example.com",
+                        product: "Vitamin C Supplements",
+                        rating: 5,
+                        review: "Excellent product! Saw improvement in my immunity within 2 weeks."
+                    },
+                    {
+                        timestamp: "2023-06-10 14:45:00",
+                        name: "Priya Patel",
+                        email: "priya@example.com",
+                        product: "Blood Pressure Monitor",
+                        rating: 4,
+                        review: "Accurate readings and easy to use. Delivery was prompt."
+                    },
+                    {
+                        timestamp: "2023-06-05 09:15:00",
+                        name: "Amit Kumar",
+                        email: "amit@example.com",
+                        product: "Diabetes Medicine",
+                        rating: 5,
+                        review: "Genuine products at reasonable prices. Very satisfied with Veltech Pharmacy."
+                    }
+                ];
+            }
+            
+            function displayReviews(reviews) {
+                const container = document.getElementById('reviews-container');
+                
+                if (!reviews || reviews.length === 0) {
+                    showNoReviews();
+                    return;
+                }
+                
+                // Sort reviews by date (newest first)
+                reviews.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                container.innerHTML = reviews.map(review => `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer-name">${review.name || 'Anonymous'}</span>
+                            <span class="review-date">${formatDate(review.timestamp)}</span>
+                        </div>
+                        <div class="rating">${renderStars(review.rating)}</div>
+                        <div class="review-text">"${review.review || 'No review text provided'}"</div>
+                        <div class="product-name">Product: ${review.product || 'General Feedback'}</div>
+                    </div>
+                `).join('');
+            }
+            
+            function renderStars(rating) {
+                if (!rating) return '';
+                let stars = '';
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 >= 0.5;
+                
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= fullStars) {
+                        stars += '<i class="fas fa-star"></i>';
+                    } else if (i === fullStars + 1 && hasHalfStar) {
+                        stars += '<i class="fas fa-star-half-alt"></i>';
+                    } else {
+                        stars += '<i class="far fa-star"></i>';
+                    }
+                }
+                return stars;
+            }
+            
+            function formatDate(timestamp) {
+                if (!timestamp) return '';
+                try {
+                    const date = new Date(timestamp);
+                    return date.toLocaleDateString('en-IN', { 
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                } catch (e) {
+                    return '';
+                }
+            }
+            
+            function showNoReviews() {
+                document.getElementById('reviews-container').innerHTML = 
+                    '<div class="error-message">No reviews yet. Be the first to review!</div>';
+            }
+            
+            function showError() {
+                document.getElementById('reviews-container').innerHTML = 
+                    '<div class="error-message">Unable to load reviews at this time. Please try again later.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

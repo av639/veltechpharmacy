@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Our Team</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 2.5rem;
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        
+        /* Guide Section */
+        .guide-section {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .guide-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .guide-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #4CAF50;
+            margin: 0 auto 20px;
+            display: block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .guide-info h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .guide-info h3 {
+            color: #FFC107;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .guide-info p {
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Coordinator Section */
+        .coordinator-section {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .coordinator-section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .coordinator-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 30px;
+            border: 5px solid #2196F3;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .coordinator-info h2 {
+            color: #2196F3;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .coordinator-info h3 {
+            color: #FFC107;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .coordinator-info p {
+            line-height: 1.6;
+        }
+        
+        /* Team Members Section */
+        .team-members {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .team-member {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 25px;
+            border-radius: 10px;
+            width: calc(33.333% - 20px);
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .member-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #FF5722;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .member-info h2 {
+            color: #FF5722;
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+        }
+        
+        .member-info h3 {
+            color: #FFC107;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .member-info p {
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        
+        /* Animation Effects */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .guide-section, .coordinator-section, .team-member {
+            opacity: 0;
+            animation: fadeIn 0.8s forwards;
+        }
+        
+        .coordinator-section {
+            animation-delay: 0.3s;
+        }
+        
+        .team-member:nth-child(1) {
+            animation-delay: 0.6s;
+        }
+        
+        .team-member:nth-child(2) {
+            animation-delay: 0.9s;
+        }
+        
+        .team-member:nth-child(3) {
+            animation-delay: 1.2s;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .coordinator-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .coordinator-image {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .team-member {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Our Dedicated Team</h1>
+        
+        <!-- Guide Section -->
+        <div class="guide-section">
+            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Guide" class="guide-image">
+            <div class="guide-info">
+                <h2>Dr. Sarah Johnson</h2>
+                <h3>Professor & Research Guide</h3>
+                <p>With over 15 years of experience in pharmaceutical research and education, Dr. Johnson has guided numerous successful projects in drug development and pharmacy practice. She holds a Ph.D. in Pharmaceutical Sciences and has published over 50 research papers in reputed journals. Her expertise lies in novel drug delivery systems and clinical pharmacy.</p>
+            </div>
+        </div>
+        
+        <!-- Project Coordinator Section -->
+        <div class="coordinator-section">
+            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Project Coordinator" class="coordinator-image">
+            <div class="coordinator-info">
+                <h2>Michael Chen</h2>
+                <h3>Project Coordinator</h3>
+                <p>Michael brings 8 years of project management experience in pharmaceutical research projects. He holds an M.Pharm degree with specialization in Pharmacy Practice and has coordinated over 20 successful research projects. His skills include research methodology, data analysis, and team coordination. Michael ensures all project milestones are met while maintaining the highest quality standards.</p>
+            </div>
+        </div>
+        
+        <!-- Team Members Section -->
+        <div class="team-members">
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member" class="member-image">
+                <div class="member-info">
+                    <h2>Rajesh Kumar</h2>
+                    <h3>Lead Researcher</h3>
+                    <p>Final year Pharm.D student with specialization in Clinical Research. Has worked on 3 previous research projects focusing on patient medication adherence and drug interactions. Recipient of the VelTech Research Excellence Award 2022.</p>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member" class="member-image">
+                <div class="member-info">
+                    <h2>Priya Sharma</h2>
+                    <h3>Data Analyst</h3>
+                    <p>Third year B.Pharm student with strong skills in biostatistics and research methodology. Developed a novel algorithm for drug interaction prediction that won the National Pharmacy Innovation Challenge. Passionate about data-driven healthcare solutions.</p>
+                </div>
+            </div>
+            
+            <div class="team-member">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Team Member" class="member-image">
+                <div class="member-info">
+                    <h2>Ananya Patel</h2>
+                    <h3>Technical Writer</h3>
+                    <p>Second year M.Pharm student specializing in Pharmaceutical Chemistry. Has published 2 review articles in indexed journals. Responsible for documentation, literature review, and preparing research manuscripts for the team. Excellent academic record with multiple university gold medals.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Additional JavaScript for enhanced effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add scroll animation
+            const teamSections = document.querySelectorAll('.guide-section, .coordinator-section, .team-member');
+            
+            function checkScroll() {
+                teamSections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (sectionTop < windowHeight - 100) {
+                        section.style.opacity = '1';
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // Check on initial load
+            
+            // Add hover effects
+            const members = document.querySelectorAll('.team-member');
+            members.forEach(member => {
+                member.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.4)';
+                });
+                
+                member.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

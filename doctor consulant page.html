@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Doctor Consultation</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .logo span {
+            color: #e74c3c;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Consultation Form */
+        .consultation-section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .consultation-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Doctor Cards */
+        .doctors-section {
+            padding: 60px 0;
+            background-color: #ecf0f1;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .doctor-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .doctor-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .doctor-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-info {
+            padding: 20px;
+        }
+
+        .doctor-info h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .doctor-specialty {
+            color: #e74c3c;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .doctor-bio {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 8px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        /* Booking Details Section */
+        .booking-details {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 40px auto;
+            display: none;
+        }
+
+        .booking-details h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .booking-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .booking-info-item {
+            margin-bottom: 15px;
+        }
+
+        .booking-info-item strong {
+            display: block;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .booking-info-item span {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .booking-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background-color: #7f8c8d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6c7a7d;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            animation: modalopen 0.5s;
+        }
+
+        @keyframes modalopen {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-title {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        /* Admin Page Styles */
+        .admin-section {
+            padding: 60px 0;
+            display: none;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-table th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .admin-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .admin-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .view-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #3498db;
+        }
+
+        .footer-logo span {
+            color: #e74c3c;
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .footer-links li {
+            margin: 0 15px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #3498db;
+        }
+
+        .copyright {
+            color: #bdc3c7;
+            font-size: 14px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .booking-info {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-actions {
+                flex-direction: column;
+            }
+
+            .admin-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">Vel<span>Tech</span> Pharmacy</div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="admin">Admin</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div id="home-page">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Online Doctor Consultation</h1>
+                <p>Get expert medical advice from licensed doctors from the comfort of your home. Fast, secure, and confidential.</p>
+                <a href="#consultation" class="btn">Book Consultation Now</a>
+            </div>
+        </section>
+
+        <!-- Consultation Form -->
+        <section id="consultation" class="consultation-section">
+            <div class="container">
+                <h2 class="section-title">Book Your Consultation</h2>
+                <form id="consultationForm" class="consultation-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" class="form-control" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialty">Consultation Specialty</label>
+                        <select id="specialty" class="form-control" required>
+                            <option value="">Select Specialty</option>
+                            <option value="general">General Physician</option>
+                            <option value="cardiology">Cardiology</option>
+                            <option value="dermatology">Dermatology</option>
+                            <option value="pediatrics">Pediatrics</option>
+                            <option value="neurology">Neurology</option>
+                            <option value="gastroenterology">Gastroenterology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="symptoms">Describe Your Symptoms</label>
+                        <textarea id="symptoms" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferred-date">Preferred Date</label>
+                            <input type="date" id="preferred-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="preferred-time">Preferred Time</label>
+                            <input type="time" id="preferred-time" class="form-control" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Submit Consultation Request</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Booking Details Section -->
+        <div id="bookingDetails" class="booking-details">
+            <h3>Your Consultation Details</h3>
+            <div class="booking-info">
+                <div class="booking-info-item">
+                    <strong>Booking Reference</strong>
+                    <span id="booking-ref">VT-2023-001</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Patient Name</strong>
+                    <span id="booking-name">John Doe</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Doctor</strong>
+                    <span id="booking-doctor">Dr. Sarah Johnson</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Specialty</strong>
+                    <span id="booking-specialty">General Physician</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Appointment Date</strong>
+                    <span id="booking-date">15 Nov 2023</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Appointment Time</strong>
+                    <span id="booking-time">10:30 AM</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Status</strong>
+                    <span id="booking-status" style="color: #27ae60;">Confirmed</span>
+                </div>
+                <div class="booking-info-item">
+                    <strong>Consultation Mode</strong>
+                    <span id="booking-mode">Video Call</span>
+                </div>
+            </div>
+            <div class="booking-actions">
+                <button class="btn">Join Consultation</button>
+                <button class="btn btn-secondary">Reschedule</button>
+                <button class="btn btn-secondary">Cancel Appointment</button>
+            </div>
+        </div>
+
+        <!-- Available Doctors -->
+        <section class="doctors-section">
+            <div class="container">
+                <h2 class="section-title">Our Expert Doctors</h2>
+                <div class="doctors-grid">
+                    <div class="doctor-card">
+                        <div class="doctor-img">
+                            <img src="https://purplehealthfiles.s3.amazonaws.com/production/doctorimages/doctor_124893.jpg" alt="Dr. Rajesh">
+                        </div>
+                        <div class="doctor-info">
+                            <h3>Dr. Rajesh</h3>
+                            <span class="doctor-specialty">General Physician</span>
+                            <p class="doctor-bio">With over 15 years of experience, Dr. Johnson specializes in family medicine and preventive care.</p>
+                            <a href="#" class="btn-outline book-consultation" data-doctor="Dr. Sarah Johnson">Book Consultation</a>
+                        </div>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-img">
+                            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Dr. Michael Chen">
+                        </div>
+                        <div class="doctor-info">
+                            <h3>Dr. Michael Chen</h3>
+                            <span class="doctor-specialty">Cardiologist</span>
+                            <p class="doctor-bio">Expert in heart health with 12 years of experience in treating cardiovascular diseases.</p>
+                            <a href="#" class="btn-outline book-consultation" data-doctor="Dr. Michael Chen">Book Consultation</a>
+                        </div>
+                    </div>
+                    <div class="doctor-card">
+                        <div class="doctor-img">
+                            <img src="https://th.bing.com/th/id/OIP._nV0FcmoUcQdTdBE0Dta8AHaHa?rs=1&pid=ImgDetMain" alt="Dr. Priya ">
+                        </div>
+                        <div class="doctor-info">
+                            <h3>Dr. Priya </h3>
+                            <span class="doctor-specialty">Dermatologist</span>
+                            <p class="doctor-bio">Specializes in skin care and treatment of skin disorders with 8 years of clinical experience.</p>
+                            <a href="#" class="btn-outline book-consultation" data-doctor="Dr. Priya Patel">Book Consultation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Admin Page -->
+    <div id="admin-page" class="admin-section">
+        <div class="container">
+            <h2 class="section-title">Admin Dashboard - Patient Consultations</h2>
+            <div class="admin-actions">
+                <button id="refreshBookings" class="btn">Refresh List</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Booking Ref</th>
+                        <th>Patient Name</th>
+                        <th>Doctor</th>
+                        <th>Specialty</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsTableBody">
+                    <!-- Bookings will be inserted here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 class="modal-title">Consultation Booked Successfully!</h3>
+            <p id="successMessage">Your consultation request has been submitted. Our team will contact you shortly to confirm your appointment.</p>
+            <div class="form-group">
+                <button id="closeModalBtn" class="btn">OK</button>
+                <button id="viewBookingBtn" class="btn btn-secondary">View Booking Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Detail Modal -->
+    <div id="bookingDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 class="modal-title">Booking Details</h3>
+            <div id="bookingDetailContent">
+                <!-- Booking details will be inserted here -->
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <button id="closeDetailModalBtn" class="btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">Vel<span>Tech</span> Pharmacy</div>
+            <ul class="footer-links">
+                <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="admin">Admin</a></li>
+            </ul>
+            <p class="copyright">&copy; 2025 VelTech Pharmacy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Generate random booking reference
+        function generateBookingRef() {
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numbers = '0123456789';
+            let ref = 'VT-';
+            
+            // Add year
+            ref += new Date().getFullYear() + '-';
+            
+            // Add random letters and numbers
+            for (let i = 0; i < 3; i++) {
+                ref += letters.charAt(Math.floor(Math.random() * letters.length));
+                ref += numbers.charAt(Math.floor(Math.random() * numbers.length));
+            }
+            
+            return ref;
+        }
+
+        // Format date for display
+        function formatDisplayDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        // Format time for display
+        function formatDisplayTime(timeString) {
+            const [hours, minutes] = timeString.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+
+        // Get all bookings from localStorage
+        function getAllBookings() {
+            const bookings = localStorage.getItem('doctorConsultations');
+            return bookings ? JSON.parse(bookings) : [];
+        }
+
+        // Save booking to localStorage
+        function saveBooking(booking) {
+            const bookings = getAllBookings();
+            bookings.push(booking);
+            localStorage.setItem('doctorConsultations', JSON.stringify(bookings));
+        }
+
+        // Delete booking from localStorage
+        function deleteBooking(bookingRef) {
+            let bookings = getAllBookings();
+            bookings = bookings.filter(booking => booking.bookingRef !== bookingRef);
+            localStorage.setItem('doctorConsultations', JSON.stringify(bookings));
+            renderBookingsTable();
+        }
+
+        // Render bookings table for admin
+        function renderBookingsTable() {
+            const bookings = getAllBookings();
+            const tableBody = document.getElementById('bookingsTableBody');
+            tableBody.innerHTML = '';
+
+            if (bookings.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No bookings found</td></tr>';
+                return;
+            }
+
+            bookings.forEach(booking => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${booking.bookingRef}</td>
+                    <td>${booking.name}</td>
+                    <td>${booking.doctor}</td>
+                    <td>${booking.specialty}</td>
+                    <td>${formatDisplayDate(booking.date)}</td>
+                    <td>${formatDisplayTime(booking.time)}</td>
+                    <td>${booking.status || 'Pending'}</td>
+                    <td class="admin-actions">
+                        <button class="admin-btn view-btn" data-ref="${booking.bookingRef}">View</button>
+                        <button class="admin-btn delete-btn" data-ref="${booking.bookingRef}">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const bookingRef = this.getAttribute('data-ref');
+                    showBookingDetails(bookingRef);
+                });
+            });
+
+            // Add event listeners to delete buttons
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const bookingRef = this.getAttribute('data-ref');
+                    if (confirm('Are you sure you want to delete this booking?')) {
+                        deleteBooking(bookingRef);
+                    }
+                });
+            });
+        }
+
+        // Show booking details in modal
+        function showBookingDetails(bookingRef) {
+            const bookings = getAllBookings();
+            const booking = bookings.find(b => b.bookingRef === bookingRef);
+            
+            if (!booking) {
+                alert('Booking not found');
+                return;
+            }
+
+            const detailContent = document.getElementById('bookingDetailContent');
+            detailContent.innerHTML = `
+                <div class="booking-info">
+                    <div class="booking-info-item">
+                        <strong>Booking Reference</strong>
+                        <span>${booking.bookingRef}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Patient Name</strong>
+                        <span>${booking.name}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Email</strong>
+                        <span>${booking.email}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Phone</strong>
+                        <span>${booking.phone}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Age</strong>
+                        <span>${booking.age}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Gender</strong>
+                        <span>${booking.gender}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Doctor</strong>
+                        <span>${booking.doctor}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Specialty</strong>
+                        <span>${booking.specialty}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Symptoms</strong>
+                        <span>${booking.symptoms}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Appointment Date</strong>
+                        <span>${formatDisplayDate(booking.date)}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Appointment Time</strong>
+                        <span>${formatDisplayTime(booking.time)}</span>
+                    </div>
+                    <div class="booking-info-item">
+                        <strong>Status</strong>
+                        <span>${booking.status || 'Pending'}</span>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('bookingDetailModal').style.display = 'flex';
+        }
+
+        // Form Submission
+        document.getElementById('consultationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const specialty = document.getElementById('specialty').value;
+            const symptoms = document.getElementById('symptoms').value;
+            const date = document.getElementById('preferred-date').value;
+            const time = document.getElementById('preferred-time').value;
+            const doctor = document.querySelector('.book-consultation.active')?.dataset.doctor || 'Available Doctor';
+            
+            // Generate booking reference
+            const bookingRef = generateBookingRef();
+            
+            // Create booking object
+            const booking = {
+                bookingRef,
+                name,
+                email,
+                phone,
+                age,
+                gender,
+                specialty: document.getElementById('specialty').options[document.getElementById('specialty').selectedIndex].text,
+                doctor,
+                symptoms,
+                date,
+                time,
+                status: 'Pending',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save booking
+            saveBooking(booking);
+            
+            // Set success message
+            document.getElementById('successMessage').innerHTML = `
+                Thank you, <strong>${name}</strong>!<br><br>
+                Your consultation request for <strong>${booking.specialty}</strong> with <strong>${doctor}</strong> has been submitted successfully.
+                Our team will contact you shortly to confirm your appointment details.
+            `;
+            
+            // Show modal
+            document.getElementById('successModal').style.display = 'flex';
+            
+            // Set booking details for display
+            document.getElementById('booking-ref').textContent = bookingRef;
+            document.getElementById('booking-name').textContent = name;
+            document.getElementById('booking-doctor').textContent = doctor;
+            document.getElementById('booking-specialty').textContent = booking.specialty;
+            document.getElementById('booking-date').textContent = formatDisplayDate(date);
+            document.getElementById('booking-time').textContent = formatDisplayTime(time);
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Book consultation buttons
+        document.querySelectorAll('.book-consultation').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all buttons
+                document.querySelectorAll('.book-consultation').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Scroll to form
+                document.getElementById('consultation').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Set specialty in form
+                const specialtyMap = {
+                    'Dr. Sarah Johnson': 'general',
+                    'Dr. Michael Chen': 'cardiology',
+                    'Dr. Priya Patel': 'dermatology'
+                };
+                
+                const doctor = this.dataset.doctor;
+                if (specialtyMap[doctor]) {
+                    document.getElementById('specialty').value = specialtyMap[doctor];
+                }
+            });
+        });
+
+        // Navigation between pages
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page');
+                
+                // Hide all pages
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('admin-page').style.display = 'none';
+                
+                // Show selected page
+                if (page === 'admin') {
+                    document.getElementById('admin-page').style.display = 'block';
+                    renderBookingsTable();
+                } else {
+                    document.getElementById('home-page').style.display = 'block';
+                }
+            });
+        });
+
+        // Modal close functionality
+        document.querySelectorAll('.close-modal').forEach(closeBtn => {
+            closeBtn.addEventListener('click', function() {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            });
+        });
+
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+        });
+
+        document.getElementById('closeDetailModalBtn').addEventListener('click', function() {
+            document.getElementById('bookingDetailModal').style.display = 'none';
+        });
+
+        // View booking details button
+        document.getElementById('viewBookingBtn').addEventListener('click', function() {
+            document.getElementById('successModal').style.display = 'none';
+            document.getElementById('bookingDetails').style.display = 'block';
+            document.getElementById('bookingDetails').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        // Refresh bookings button
+        document.getElementById('refreshBookings').addEventListener('click', function() {
+            renderBookingsTable();
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+            }
+        });
+
+        // Set minimum date for appointment (today)
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('preferred-date').setAttribute('min', today);
+
+        // Initialize - show home page by default
+        document.getElementById('home-page').style.display = 'block';
+    </script>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Customer Reports</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #7eb411b6;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #3d5166;
+        }
+
+        .logo h2 {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        .nav-menu {
+            margin-top: 30px;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover {
+            background-color: #ece73cd1;
+        }
+
+        .nav-item.active {
+            background-color: #1e7adb;
+            border-left: 4px solid #3498db;
+        }
+
+        .nav-item i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .search-filter {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: #7f8c8d;
+        }
+
+        .filter-dropdown {
+            width: 200px;
+        }
+
+        .filter-dropdown select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .card .change {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .change.up {
+            color: #2ecc71;
+        }
+
+        .change.down {
+            color: #e74c3c;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h2 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .chart {
+            height: 300px;
+            position: relative;
+        }
+
+        .customer-table {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .customer-table h2 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status.active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .view-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: #f1c40f;
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .customer-details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-header h2 {
+            color: #2c3e50;
+        }
+
+        .customer-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-group h3 {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .info-group p {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .purchase-history {
+            margin-top: 30px;
+        }
+
+        .purchase-history h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .purchase-item {
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .purchase-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .purchase-date {
+            color: #7f8c8d;
+        }
+
+        .purchase-total {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .purchase-products {
+            margin-top: 10px;
+        }
+
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .product-name {
+            flex: 2;
+        }
+
+        .product-qty {
+            flex: 1;
+            text-align: center;
+        }
+
+        .product-price {
+            flex: 1;
+            text-align: right;
+        }
+
+        @media (max-width: 1200px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .customer-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .filter-dropdown {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>VelTech<span>Pharmacy</span></h2>
+            </div>
+            <div class="nav-menu">
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/more/dashboard/inventory%20management.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/medicine%20page.html" class="nav-item">
+                    <i class="fas fa-pills"></i> Products
+                </a>
+                
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/more/dashboard/customer%20details%20page.html" class="nav-item active">
+                    <i class="fas fa-users"></i> Customers
+                </a>
+                
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/more/dashboard/inventory%20management.html" class="nav-item">
+                    <i class="fas fa-boxes"></i> Inventory
+                </a>
+                
+               
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Customer Reports</h1>
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                    <span>Admin</span>
+                </div>
+            </div>
+            
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search customers...">
+                </div>
+                <div class="filter-dropdown">
+                    <select>
+                        <option>All Customers</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                        <option>New Customers</option>
+                        <option>Premium Members</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Customers</h3>
+                    <div class="value">2,487</div>
+                    <div class="change up">
+                        <i class="fas fa-arrow-up"></i> 15% from last month
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>New Customers</h3>
+                    <div class="value">184</div>
+                    <div class="change up">
+                        <i class="fas fa-arrow-up"></i> 8% from last month
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Active Customers</h3>
+                    <div class="value">1,892</div>
+                    <div class="change up">
+                        <i class="fas fa-arrow-up"></i> 12% from last month
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Avg. Order Value</h3>
+                    <div class="value">$45.67</div>
+                    <div class="change down">
+                        <i class="fas fa-arrow-down"></i> 3% from last month
+                    </div>
+                </div>
+            </div>
+            
+            <div class="charts">
+                <div class="chart-container">
+                    <h2>Customer Growth</h2>
+                    <div class="chart">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h2>Customer Locations</h2>
+                    <div class="chart">
+                        <canvas id="locationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="customer-table">
+                <h2>Customer Details</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Orders</th>
+                            <th>Total Spent</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#CUS1001</td>
+                            <td>John Smith</td>
+                            <td>john.smith@example.com</td>
+                            <td>(555) 123-4567</td>
+                            <td>12</td>
+                            <td>$548.76</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="action-btn view-btn" onclick="openCustomerModal('CUS1001')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#CUS1002</td>
+                            <td>Sarah Johnson</td>
+                            <td>sarah.j@example.com</td>
+                            <td>(555) 987-6543</td>
+                            <td>8</td>
+                            <td>$387.25</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="action-btn view-btn" onclick="openCustomerModal('CUS1002')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#CUS1003</td>
+                            <td>Michael Brown</td>
+                            <td>michael.b@example.com</td>
+                            <td>(555) 456-7890</td>
+                            <td>3</td>
+                            <td>$124.99</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="action-btn view-btn" onclick="openCustomerModal('CUS1003')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#CUS1004</td>
+                            <td>Emily Davis</td>
+                            <td>emily.d@example.com</td>
+                            <td>(555) 789-0123</td>
+                            <td>15</td>
+                            <td>$721.43</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="action-btn view-btn" onclick="openCustomerModal('CUS1004')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#CUS1005</td>
+                            <td>Robert Wilson</td>
+                            <td>robert.w@example.com</td>
+                            <td>(555) 234-5678</td>
+                            <td>1</td>
+                            <td>$45.99</td>
+                            <td><span class="status inactive">Inactive</span></td>
+                            <td>
+                                <button class="action-btn view-btn" onclick="openCustomerModal('CUS1005')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#CUS1006</td>
+                            <td>Jennifer Lee</td>
+                            <td>jennifer.l@example.com</td>
+                            <td>(555) 345-6789</td>
+                            <td>22</td>
+                            <td>$1,245.67</td>
+                            <td><span class="status active">Active</span></td>
+                            <td>
+                                <button class="action-btn view-btn" onclick="openCustomerModal('CUS1006')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="action-btn edit-btn">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    <button><i class="fas fa-angle-double-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>4</button>
+                    <button><i class="fas fa-angle-double-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Details Modal -->
+    <div class="customer-details-modal" id="customerModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCustomerModal()">&times;</span>
+            <div class="modal-header">
+                <h2>Customer Details</h2>
+            </div>
+            
+            <div class="customer-info">
+                <div class="info-group">
+                    <h3>Personal Information</h3>
+                    <p><strong>Customer ID:</strong> <span id="customerId">#CUS1001</span></p>
+                    <p><strong>Name:</strong> <span id="customerName">John Smith</span></p>
+                    <p><strong>Date of Birth:</strong> <span id="customerDob">15/03/1985</span></p>
+                    <p><strong>Gender:</strong> <span id="customerGender">Male</span></p>
+                    
+                    <h3>Contact Information</h3>
+                    <p><strong>Email:</strong> <span id="customerEmail">john.smith@example.com</span></p>
+                    <p><strong>Phone:</strong> <span id="customerPhone">(555) 123-4567</span></p>
+                    <p><strong>Alternate Phone:</strong> <span id="customerAltPhone">(555) 765-4321</span></p>
+                </div>
+                
+                <div class="info-group">
+                    <h3>Address</h3>
+                    <p><strong>Street:</strong> <span id="customerStreet">123 Main St</span></p>
+                    <p><strong>City:</strong> <span id="customerCity">Springfield</span></p>
+                    <p><strong>State:</strong> <span id="customerState">Illinois</span></p>
+                    <p><strong>ZIP Code:</strong> <span id="customerZip">62704</span></p>
+                    <p><strong>Country:</strong> <span id="customerCountry">United States</span></p>
+                    
+                    <h3>Account Status</h3>
+                    <p><strong>Status:</strong> <span id="customerStatus" class="status active">Active</span></p>
+                    <p><strong>Member Since:</strong> <span id="memberSince">12/05/2020</span></p>
+                    <p><strong>Last Purchase:</strong> <span id="lastPurchase">03/11/2023</span></p>
+                </div>
+            </div>
+            
+            <div class="purchase-history">
+                <h3>Purchase History</h3>
+                
+                <div class="purchase-item">
+                    <div class="purchase-header">
+                        <div class="purchase-id">Order #ORD-2023-1103</div>
+                        <div class="purchase-date">November 3, 2023</div>
+                        <div class="purchase-total">$78.45</div>
+                    </div>
+                    <div class="purchase-products">
+                        <div class="product-item">
+                            <div class="product-name">Paracetamol 500mg (30 tablets)</div>
+                            <div class="product-qty">2</div>
+                            <div class="product-price">$11.98</div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-name">Vitamin C 1000mg (60 tablets)</div>
+                            <div class="product-qty">1</div>
+                            <div class="product-price">$14.99</div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-name">Omeprazole 20mg (14 capsules)</div>
+                            <div class="product-qty">1</div>
+                            <div class="product-price">$12.99</div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-name">Shipping</div>
+                            <div class="product-qty"></div>
+                            <div class="product-price">$5.00</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="purchase-item">
+                    <div class="purchase-header">
+                        <div class="purchase-id">Order #ORD-2023-1005</div>
+                        <div class="purchase-date">October 5, 2023</div>
+                        <div class="purchase-total">$45.67</div>
+                    </div>
+                    <div class="purchase-products">
+                        <div class="product-item">
+                            <div class="product-name">Cetirizine 10mg (30 tablets)</div>
+                            <div class="product-qty">1</div>
+                            <div class="product-price">$8.99</div>
+                        </div>
+                        <div class="product-item">
+                            <div class="product-name">Ibuprofen 200mg (24 tablets)</div>
+                            <div class="product-qty">2</div>
+                            <div class="product-price">$14.98</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Growth Chart - Customer Growth
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Total Customers',
+                    data: [1200, 1350, 1450, 1600, 1750, 1850, 1950, 2100, 2250, 2350, 2450, 2487],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'New Customers',
+                    data: [120, 150, 100, 150, 150, 100, 100, 150, 150, 100, 100, 184],
+                    borderColor: '#2ecc71',
+                    backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                    }
+                }
+            }
+        });
+
+        // Location Chart - Customer Locations
+        const locationCtx = document.getElementById('locationChart').getContext('2d');
+        const locationChart = new Chart(locationCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Springfield', 'Shelbyville', 'Capital City', 'Ogdenville', 'North Haverbrook', 'Brockway'],
+                datasets: [{
+                    label: 'Customers by Location',
+                    data: [850, 420, 380, 290, 240, 207],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(241, 196, 15, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(26, 188, 156, 0.7)',
+                        'rgba(231, 76, 60, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(26, 188, 156, 1)',
+                        'rgba(231, 76, 60, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.parsed.y} customers`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 100
+                        }
+                    }
+                }
+            }
+        });
+
+        // Customer Modal Functions
+        function openCustomerModal(customerId) {
+            // In a real app, you would fetch customer data based on the ID
+            // This is just a demo with static data
+            document.getElementById('customerModal').style.display = 'flex';
+        }
+
+        function closeCustomerModal() {
+            document.getElementById('customerModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('customerModal');
+            if (event.target == modal) {
+                closeCustomerModal();
+            }
+        }
+    </script>
+</body>
+</html>

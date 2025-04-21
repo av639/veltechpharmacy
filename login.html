@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmaceutical E-Commerce Login</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* General Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Background Video */
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+        }
+
+        /* Login Container */
+        .login-container, .register-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+            display: none;
+        }
+
+        .login-container.active, .register-container.active {
+            display: block;
+        }
+
+        .login-container h2, .register-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .login-container input, .register-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .login-container input[type="submit"],
+        .register-container input[type="submit"] {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .login-container input[type="submit"]:hover,
+        .register-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .login-container p, .register-container p {
+            margin-top: 15px;
+            color: #333;
+        }
+
+        .login-container a, .register-container a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-container a:hover, .register-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Video -->
+    <video autoplay muted loop id="background-video">
+        <source src="d:\mini project\login .html\bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Login Container -->
+    <div class="login-container active" id="loginContainer">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <p>Don't have an account? <a href="#" id="showRegister">Sign up</a></p>
+    </div>
+
+    <!-- Register Container -->
+    <div class="register-container" id="registerContainer">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="text" id="regName" placeholder="Full Name" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required>
+            <input type="tel" id="regPhone" placeholder="Phone Number">
+            <input type="text" id="regAddress" placeholder="Address">
+            <input type="submit" value="Register">
+        </form>
+        <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+    </div>
+
+    <script>
+        // Store registered users in localStorage
+        if (!localStorage.getItem('registeredUsers')) {
+            localStorage.setItem('registeredUsers', JSON.stringify([]));
+        }
+
+        // Toggle between login and register forms
+        document.getElementById('showRegister').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginContainer').classList.remove('active');
+            document.getElementById('registerContainer').classList.add('active');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('registerContainer').classList.remove('active');
+            document.getElementById('loginContainer').classList.add('active');
+        });
+
+        // Handle registration form submission
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get input values
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const phone = document.getElementById('regPhone').value;
+            const address = document.getElementById('regAddress').value;
+
+            // Validate inputs
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long!');
+                return;
+            }
+
+            // Check if email already registered
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers'));
+            const userExists = registeredUsers.some(user => user.email === email);
+
+            if (userExists) {
+                alert('This email is already registered!');
+                return;
+            }
+
+            // Add new user
+            const newUser = {
+                name,
+                email,
+                password,
+                phone,
+                address
+            };
+
+            registeredUsers.push(newUser);
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+            localStorage.setItem('userEmail', email);
+
+            alert('Registration successful! You can now login.');
+            
+            // Switch to login form
+            document.getElementById('registerContainer').classList.remove('active');
+            document.getElementById('loginContainer').classList.add('active');
+            
+            // Clear form
+            document.getElementById('registerForm').reset();
+        });
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get input values
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Validate inputs
+            if (!email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            // Check if user exists and password matches
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers'));
+            const user = registeredUsers.find(user => user.email === email);
+
+            if (!user) {
+                alert('Email not registered. Please sign up first.');
+                return;
+            }
+
+            if (user.password !== password) {
+                alert('Incorrect password!');
+                return;
+            }
+
+            // Store email in localStorage
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userName', user.name);
+
+            alert('Login successful!');
+            
+            // Redirect to home page
+            window.location.href = "file:///D:/mini%20project/HOME%20PAGE.html";
+        });
+    </script>
+
+</body>
+</html>

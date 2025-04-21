@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Upload Prescription</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #45a049;
+            --accent-color: #ff5722;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --white: #fff;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .prescription-section {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+        
+        .upload-area:hover {
+            background-color: rgba(76, 175, 80, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area p {
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--accent-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e64a19;
+        }
+        
+        .preview-container {
+            display: none;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .status-message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+        
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+        
+        .admin-section {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .admin-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .medication-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .medication-list th, 
+        .medication-list td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .medication-list th {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .medication-list tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .action-btn {
+            padding: 0.3rem 0.6rem;
+            margin-right: 0.5rem;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .add-to-cart-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .reject-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .cart-section {
+            margin-top: 2rem;
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: none;
+        }
+        
+        .cart-items {
+            margin-top: 1rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .checkout-btn {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+        
+        footer {
+            background-color: var(--dark-gray);
+            color: var(--white);
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        /* Admin Response Box */
+        .admin-response {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .admin-response h3 {
+            color: #1976D2;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-response h3 i {
+            margin-right: 10px;
+        }
+        
+        .suggested-meds {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .suggested-med {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .suggested-med:last-child {
+            border-bottom: none;
+        }
+        
+        .med-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        .reject-btn-sm {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">VelTech Pharmacy</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Prescriptions</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Account</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">Upload Your Prescription</h1>
+        
+        <div class="prescription-section">
+            <h2 class="section-title">Upload Prescription</h2>
+            
+            <div id="statusMessage" class="status-message"></div>
+            
+            <div id="uploadArea" class="upload-area">
+                <i class="fas fa-file-prescription"></i>
+                <p>Drag & Drop your prescription here or click to browse</p>
+                <p class="small">Supported formats: JPG, PNG, PDF (Max size: 5MB)</p>
+                <button class="btn">Select File</button>
+                <input type="file" id="prescriptionFile" accept="image/*,.pdf" style="display: none;">
+            </div>
+            
+            <div id="previewContainer" class="preview-container">
+                <img id="previewImage" class="preview-image" src="#" alt="Prescription Preview">
+                <div class="actions" style="margin-top: 1rem;">
+                    <button id="cancelUpload" class="btn btn-secondary">Cancel</button>
+                    <button id="submitPrescription" class="btn">Submit Prescription</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="patientNotes">Additional Notes (Optional)</label>
+                <textarea id="patientNotes" placeholder="Any additional instructions or information for our pharmacist..."></textarea>
+            </div>
+        </div>
+        
+        <!-- Admin Response Box -->
+        <div id="adminResponse" class="admin-response">
+            <h3><i class="fas fa-user-md"></i> Pharmacist Response</h3>
+            <div id="pharmacistMessage">Our pharmacist has reviewed your prescription and suggests the following medications:</div>
+            
+            <div class="suggested-meds" id="suggestedMeds">
+                <!-- Suggested medications will appear here -->
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <button id="acceptAllMeds" class="btn">Accept All Medications</button>
+                <button id="requestChanges" class="btn btn-secondary" style="float: right;">Request Changes</button>
+            </div>
+        </div>
+        
+        <!-- Admin Section (hidden for regular users) -->
+        <div id="adminSection" class="admin-section">
+            <h3>Prescription Verification</h3>
+            <div class="form-group">
+                <label for="pharmacistNotes">Pharmacist Notes</label>
+                <textarea id="pharmacistNotes" placeholder="Enter verification notes or guidance for the patient..."></textarea>
+            </div>
+            
+            <h3>Prescribed Medications</h3>
+            <table class="medication-list">
+                <thead>
+                    <tr>
+                        <th>Medication</th>
+                        <th>Dosage</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="medicationTable">
+                    <!-- Medications will be added here dynamically -->
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 1rem;">
+                <button id="addCustomMed" class="btn">Add Custom Medication</button>
+                <button id="completeVerification" class="btn" style="float: right;">Send Response to Patient</button>
+            </div>
+        </div>
+        
+        <!-- Cart Section -->
+        <div id="cartSection" class="cart-section">
+            <h2 class="section-title">Your Prescription Order</h2>
+            <div id="cartItems" class="cart-items">
+                <!-- Cart items will be added here dynamically -->
+            </div>
+            <div class="cart-summary">
+                <p>Total: <span id="cartTotal">₹0.00</span></p>
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/PAYMENT%20PAGE(Upload%20pres).html">
+                    <button id="checkoutBtn" class="btn checkout-btn">Proceed to Checkout</button>
+                </a>
+            </div>
+            
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 VelTech Pharmacy. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('uploadArea');
+            const prescriptionFile = document.getElementById('prescriptionFile');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const cancelUpload = document.getElementById('cancelUpload');
+            const submitPrescription = document.getElementById('submitPrescription');
+            const statusMessage = document.getElementById('statusMessage');
+            const adminSection = document.getElementById('adminSection');
+            const adminResponse = document.getElementById('adminResponse');
+            const suggestedMeds = document.getElementById('suggestedMeds');
+            const acceptAllMeds = document.getElementById('acceptAllMeds');
+            const requestChanges = document.getElementById('requestChanges');
+            const cartSection = document.getElementById('cartSection');
+            const medicationTable = document.getElementById('medicationTable');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const addCustomMed = document.getElementById('addCustomMed');
+            const completeVerification = document.getElementById('completeVerification');
+            const pharmacistNotes = document.getElementById('pharmacistNotes');
+            const pharmacistMessage = document.getElementById('pharmacistMessage');
+            
+            // Sample data for demonstration
+            const sampleMedications = [
+                { id: 1, name: "Amoxicillin 500mg", dosage: "1 tablet 3 times daily", quantity: 30, price: 450 },
+                { id: 2, name: "Atorvastatin 20mg", dosage: "1 tablet at bedtime", quantity: 30, price: 320 },
+                { id: 3, name: "Metformin 500mg", dosage: "1 tablet twice daily", quantity: 60, price: 280 }
+            ];
+            
+            // Cart data
+            let cart = [];
+            let adminResponseTimeout;
+            
+            // Check if user is admin (for demo purposes)
+            // In a real application, this would be determined by server-side authentication
+            const isAdmin = window.location.search.includes('admin=true');
+            
+            // Initialize the page
+            if (isAdmin) {
+                adminSection.style.display = 'block';
+                loadSampleMedications();
+            }
+            
+            // Event Listeners
+            uploadArea.addEventListener('click', () => prescriptionFile.click());
+            
+            prescriptionFile.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    
+                    // Validate file type and size
+                    const validTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                    const maxSize = 5 * 1024 * 1024; // 5MB
+                    
+                    if (!validTypes.includes(file.type)) {
+                        showStatus('Please upload a JPG, PNG, or PDF file.', 'error');
+                        return;
+                    }
+                    
+                    if (file.size > maxSize) {
+                        showStatus('File size exceeds 5MB limit.', 'error');
+                        return;
+                    }
+                    
+                    // For images, show preview
+                    if (file.type.includes('image')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImage.src = e.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        // For PDFs, show a generic icon
+                        previewImage.src = 'https://cdn-icons-png.flaticon.com/512/337/337946.png';
+                        previewContainer.style.display = 'block';
+                    }
+                }
+            });
+            
+            cancelUpload.addEventListener('click', function() {
+                prescriptionFile.value = '';
+                previewContainer.style.display = 'none';
+            });
+            
+            submitPrescription.addEventListener('click', function() {
+                if (!prescriptionFile.files[0]) {
+                    showStatus('Please select a prescription file to upload.', 'error');
+                    return;
+                }
+                
+                // Simulate upload and processing
+                showStatus('Uploading your prescription...', 'success');
+                
+                setTimeout(() => {
+                    showStatus('Prescription uploaded successfully! Our pharmacist will review it shortly.', 'success');
+                    previewContainer.style.display = 'none';
+                    prescriptionFile.value = '';
+                    
+                    // Simulate admin response after 30 seconds
+                    clearTimeout(adminResponseTimeout);
+                    adminResponseTimeout = setTimeout(simulateAdminResponse, 30000);
+                }, 1500);
+            });
+            
+            // Simulate admin response with suggested medications
+            function simulateAdminResponse() {
+                // Clear any existing suggested meds
+                suggestedMeds.innerHTML = '';
+                
+                // Add sample suggested medications
+                sampleMedications.forEach(med => {
+                    const medElement = document.createElement('div');
+                    medElement.className = 'suggested-med';
+                    medElement.innerHTML = `
+                        <div>
+                            <strong>${med.name}</strong>
+                            <div>${med.dosage}</div>
+                            <div>Quantity: ${med.quantity} | Price: ₹${med.price.toFixed(2)}</div>
+                        </div>
+                        <div class="med-actions">
+                            <button class="accept-btn" data-id="${med.id}">Accept</button>
+                            <button class="reject-btn-sm" data-id="${med.id}">Reject</button>
+                        </div>
+                    `;
+                    suggestedMeds.appendChild(medElement);
+                });
+                
+                // Set pharmacist message
+                pharmacistMessage.textContent = "Our pharmacist has reviewed your prescription and suggests the following medications:";
+                
+                // Show the admin response box
+                adminResponse.style.display = 'block';
+                
+                // Scroll to the response
+                adminResponse.scrollIntoView({ behavior: 'smooth' });
+                
+                // Add event listeners to accept/reject buttons
+                document.querySelectorAll('.accept-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const medId = parseInt(this.getAttribute('data-id'));
+                        const med = sampleMedications.find(m => m.id === medId);
+                        addToCart(medId);
+                        this.parentElement.parentElement.style.backgroundColor = '#e8f5e9';
+                        this.disabled = true;
+                        this.nextElementSibling.disabled = true;
+                        showStatus(`${med.name} added to your cart.`, 'success');
+                    });
+                });
+                
+                document.querySelectorAll('.reject-btn-sm').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const medId = parseInt(this.getAttribute('data-id'));
+                        const med = sampleMedications.find(m => m.id === medId);
+                        this.parentElement.parentElement.style.backgroundColor = '#ffebee';
+                        this.disabled = true;
+                        this.previousElementSibling.disabled = true;
+                        showStatus(`${med.name} removed from suggestions.`, 'success');
+                    });
+                });
+            }
+            
+            acceptAllMeds.addEventListener('click', function() {
+                sampleMedications.forEach(med => {
+                    addToCart(med.id);
+                });
+                
+                document.querySelectorAll('.suggested-med').forEach(el => {
+                    el.style.backgroundColor = '#e8f5e9';
+                });
+                
+                document.querySelectorAll('.accept-btn, .reject-btn-sm').forEach(btn => {
+                    btn.disabled = true;
+                });
+                
+                showStatus('All suggested medications added to your cart.', 'success');
+                cartSection.style.display = 'block';
+            });
+            
+            requestChanges.addEventListener('click', function() {
+                showStatus('Your request for changes has been sent to the pharmacist.', 'success');
+                adminResponse.style.display = 'none';
+            });
+            
+            // Admin functionality
+            function loadSampleMedications() {
+                medicationTable.innerHTML = '';
+                
+                sampleMedications.forEach(med => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${med.name}</td>
+                        <td>${med.dosage}</td>
+                        <td>${med.quantity}</td>
+                        <td>₹${med.price.toFixed(2)}</td>
+                        <td>
+                            <button class="action-btn add-to-cart-btn" data-id="${med.id}">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                            <button class="action-btn reject-btn" data-id="${med.id}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
+                    `;
+                    medicationTable.appendChild(row);
+                });
+                
+                // Add event listeners to action buttons
+                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const medId = parseInt(this.getAttribute('data-id'));
+                        addToCart(medId);
+                    });
+                });
+                
+                document.querySelectorAll('.reject-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const medId = parseInt(this.getAttribute('data-id'));
+                        const row = this.closest('tr');
+                        row.style.backgroundColor = '#ffebee';
+                        this.disabled = true;
+                        row.querySelector('.add-to-cart-btn').disabled = true;
+                    });
+                });
+            }
+            
+            addCustomMed.addEventListener('click', function() {
+                const name = prompt('Enter medication name:');
+                if (!name) return;
+                
+                const dosage = prompt('Enter dosage instructions:') || 'As directed';
+                const quantity = parseInt(prompt('Enter quantity:') || 30);
+                const price = parseFloat(prompt('Enter price:') || 0);
+                
+                const newId = sampleMedications.length > 0 ? 
+                    Math.max(...sampleMedications.map(m => m.id)) + 1 : 1;
+                
+                const newMed = {
+                    id: newId,
+                    name: name,
+                    dosage: dosage,
+                    quantity: quantity,
+                    price: price
+                };
+                
+                sampleMedications.push(newMed);
+                loadSampleMedications();
+                showStatus('Custom medication added.', 'success');
+            });
+            
+            completeVerification.addEventListener('click', function() {
+                if (!pharmacistNotes.value.trim()) {
+                    showStatus('Please add pharmacist notes before sending response.', 'error');
+                    return;
+                }
+                
+                showStatus('Response sent to patient successfully.', 'success');
+                
+                // In a real app, this would send the response to the patient
+                // For demo, we'll simulate the patient receiving it
+                if (!isAdmin) {
+                    simulateAdminResponse();
+                    pharmacistMessage.textContent = pharmacistNotes.value;
+                }
+                
+                // Clear the notes
+                pharmacistNotes.value = '';
+            });
+            
+            // Cart functionality
+            function addToCart(medId) {
+                const medication = sampleMedications.find(m => m.id === medId);
+                if (!medication) return;
+                
+                // Check if already in cart
+                const existingItem = cart.find(item => item.id === medId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        id: medication.id,
+                        name: medication.name,
+                        price: medication.price,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+                cartSection.style.display = 'block';
+            }
+            
+            function updateCart() {
+                cartItems.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    cartItems.innerHTML = '<p>Your cart is empty.</p>';
+                    cartTotal.textContent = '₹0.00';
+                    return;
+                }
+                
+                let total = 0;
+                
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div>
+                            <h4>${item.name}</h4>
+                            <p>₹${item.price.toFixed(2)} x ${item.quantity}</p>
+                        </div>
+                        <div>
+                            <p>₹${itemTotal.toFixed(2)}</p>
+                            <button class="action-btn remove-btn" data-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+                
+                cartTotal.textContent = `₹${total.toFixed(2)}`;
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const itemId = parseInt(this.getAttribute('data-id'));
+                        removeFromCart(itemId);
+                    });
+                });
+            }
+            
+            function removeFromCart(itemId) {
+                cart = cart.filter(item => item.id !== itemId);
+                updateCart();
+                showStatus('Item removed from cart.', 'success');
+            }
+            
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.length === 0) {
+                    showStatus('Your cart is empty.', 'error');
+                    return;
+                }
+                
+                showStatus('Redirecting to checkout...', 'success');
+                // In a real app, this would redirect to checkout page
+                setTimeout(() => {
+                    alert('Checkout functionality would be implemented here.');
+                }, 1000);
+            });
+            
+            // Helper functions
+            function showStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = `status-message ${type}`;
+                statusMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.backgroundColor = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    prescriptionFile.files = e.dataTransfer.files;
+                    const event = new Event('change');
+                    prescriptionFile.dispatchEvent(event);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

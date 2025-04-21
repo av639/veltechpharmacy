@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Sales Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #0ff9f9;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #3d5166;
+        }
+
+        .logo h2 {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        .nav-menu {
+            margin-top: 30px;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #4e79a6;
+        }
+
+        .nav-item i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .card .change {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .change.up {
+            color: #2ecc71;
+        }
+
+        .change.down {
+            color: #e74c3c;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container h2 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .chart {
+            height: 300px;
+            position: relative;
+        }
+
+        .stock-table {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stock-table h2 {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status.in-stock {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.low-stock {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status.out-of-stock {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        @media (max-width: 1200px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">
+                <h2>VelTech<span>Pharmacy</span></h2>
+            </div>
+            <div class="nav-menu">
+                <style>
+                    .nav-item {
+                        display: flex;
+                        align-items: center;
+                        padding: 10px 15px;
+                        text-decoration: none;
+                        color: #333;
+                        border-radius: 5px;
+                        transition: background 0.3s;
+                    }
+                
+                    .nav-item:hover {
+                        background-color: #f0f0f0;
+                    }
+                
+                    .nav-item.active {
+                        background-color: #d0e6ff;
+                        font-weight: bold;
+                    }
+                </style>
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/more/dashboard/stock%20dashboard.html" class="nav-item active">
+                    <i>📊</i> Dashboard
+                </a>
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/medicine%20page.html" class="nav-item">
+                    <i>💊</i> Products
+                </a>
+                
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/more/dashboard/customer%20details%20page.html" class="nav-item">
+                    <i>🧑‍⚕️</i> Customers
+                </a>
+                <a href="file:///D:/mini%20project/nav.html(header)%20up%20page/more/dashboard/inventory%20management.html" class="nav-item">
+                    <i>📦</i> Inventory
+                </a>
+                
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>Sales Dashboard</h1>
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                    <span>Admin</span>
+                </div>
+            </div>
+            
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Sales</h3>
+                    <div class="value">$24,780</div>
+                    <div class="change up">
+                        <span>↑ 12% from last month</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Orders</h3>
+                    <div class="value">1,248</div>
+                    <div class="change up">
+                        <span>↑ 8% from last month</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Products Sold</h3>
+                    <div class="value">5,672</div>
+                    <div class="change up">
+                        <span>↑ 15% from last month</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Inventory Alert</h3>
+                    <div class="value">18</div>
+                    <div class="change down">
+                        <span>↓ 3% from last month</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="charts">
+                <div class="chart-container">
+                    <h2>Sales Report (Last 6 Months)</h2>
+                    <div class="chart">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h2>Sales by Category</h2>
+                    <div class="chart">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="charts">
+                <div class="chart-container">
+                    <h2>Top Selling Products</h2>
+                    <div class="chart">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h2>Inventory Status</h2>
+                    <div class="chart">
+                        <canvas id="inventoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stock-table">
+                <h2>Stock Management</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medicine ID</th>
+                            <th>Medicine Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Sold (30 days)</th>
+                            <th>Available</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#MED001</td>
+                            <td>Paracetamol 500mg</td>
+                            <td>Pain Relief</td>
+                            <td>$5.99</td>
+                            <td>342</td>
+                            <td>128</td>
+                            <td><span class="status in-stock">In Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td>#MED002</td>
+                            <td>Ibuprofen 200mg</td>
+                            <td>Pain Relief</td>
+                            <td>$7.49</td>
+                            <td>278</td>
+                            <td>45</td>
+                            <td><span class="status low-stock">Low Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td>#MED003</td>
+                            <td>Cetirizine 10mg</td>
+                            <td>Allergy</td>
+                            <td>$8.99</td>
+                            <td>195</td>
+                            <td>62</td>
+                            <td><span class="status in-stock">In Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td>#MED004</td>
+                            <td>Omeprazole 20mg</td>
+                            <td>Antacid</td>
+                            <td>$12.99</td>
+                            <td>156</td>
+                            <td>0</td>
+                            <td><span class="status out-of-stock">Out of Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td>#MED005</td>
+                            <td>Loratadine 10mg</td>
+                            <td>Allergy</td>
+                            <td>$9.99</td>
+                            <td>201</td>
+                            <td>38</td>
+                            <td><span class="status low-stock">Low Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td>#MED006</td>
+                            <td>Vitamin C 1000mg</td>
+                            <td>Vitamins</td>
+                            <td>$14.99</td>
+                            <td>312</td>
+                            <td>87</td>
+                            <td><span class="status in-stock">In Stock</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Line Chart - Sales Report
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Total Sales ($)',
+                    data: [12500, 18900, 17800, 19500, 22400, 24780],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Pie Chart - Sales by Category
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Pain Relief', 'Allergy', 'Antacid', 'Vitamins', 'Antibiotics', 'Other'],
+                datasets: [{
+                    data: [35, 20, 15, 18, 8, 4],
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#f1c40f',
+                        '#e74c3c',
+                        '#9b59b6',
+                        '#1abc9c'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: ${percentage}% (${value} units)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart - Top Selling Products
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Paracetamol', 'Ibuprofen', 'Vitamin C', 'Cetirizine', 'Loratadine', 'Omeprazole'],
+                datasets: [{
+                    label: 'Units Sold (Last Month)',
+                    data: [342, 278, 312, 195, 201, 156],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.7)',
+                        'rgba(46, 204, 113, 0.7)',
+                        'rgba(241, 196, 15, 0.7)',
+                        'rgba(155, 89, 182, 0.7)',
+                        'rgba(26, 188, 156, 0.7)',
+                        'rgba(231, 76, 60, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(46, 204, 113, 1)',
+                        'rgba(241, 196, 15, 1)',
+                        'rgba(155, 89, 182, 1)',
+                        'rgba(26, 188, 156, 1)',
+                        'rgba(231, 76, 60, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw} units`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 50
+                        }
+                    }
+                }
+            }
+        });
+
+        // Inventory Chart
+        const inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
+        const inventoryChart = new Chart(inventoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['In Stock', 'Low Stock', 'Out of Stock'],
+                datasets: [{
+                    data: [85, 12, 3],
+                    backgroundColor: [
+                        '#2ecc71',
+                        '#f1c40f',
+                        '#e74c3c'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw || 0;
+                            return `${label}: ${value}% of products`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    </script>
+</body>
+</html>

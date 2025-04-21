@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelTech Pharmacy - Secure Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #4CAF50;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        header p {
+            color: #ccc;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .payment-method:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #4CAF50;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .payment-method.active {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .payment-method h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4CAF50;
+            display: flex;
+            align-items: center;
+        }
+
+        .payment-method h2 i {
+            margin-right: 10px;
+        }
+
+        .payment-method p {
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+
+        .upi-scanner {
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .upi-scanner.active {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .payment-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .payment-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .payment-btn img {
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .payment-btn.gpay {
+            background: #4285F4;
+        }
+
+        .payment-btn.paytm {
+            background: #00B9F1;
+        }
+
+        .payment-btn.phonepe {
+            background: #5F259F;
+        }
+
+        .payment-btn.amazonpay {
+            background: #FF9900;
+            color: #000;
+        }
+
+        .cod-details {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .cod-details.active {
+            display: block;
+        }
+
+        .cod-details p {
+            margin-bottom: 10px;
+        }
+
+        .confirm-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .confirm-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .confirm-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Delivery Details Form */
+        .delivery-form {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .delivery-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .submit-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        /* Thank You Message */
+        .thank-you {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .thank-you.active {
+            display: block;
+        }
+
+        .thank-you h2 {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .thank-you p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .thank-you-icon {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #4CAF50;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 15px;
+                padding: 15px;
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Payment Section -->
+        <div id="paymentSection">
+            <header>
+                <h1><i class="fas fa-pills"></i> VelTech Pharmacy</h1>
+                <p>Secure Payment Gateway</p>
+            </header>
+
+            <div class="payment-options">
+                <div class="payment-method" id="upiOption">
+                    <h2><i class="fas fa-qrcode"></i> UPI Payment</h2>
+                    <p>Scan the QR code using any UPI app to complete your payment instantly.</p>
+                    
+                    <div class="payment-buttons">
+                        <a href="https://pay.google.com" class="payment-btn gpay" id="gpayBtn">
+                            <img src="d:/mini project/gpay scanner/latest-google-pay-icon-logo-free-vector-removebg-preview.png"
+                            alt="GPay"
+                            style="width: 50px; height: auto;">
+                       GPay
+                       
+                        </a>
+                        <a href="https://paytm.com" class="payment-btn paytm" id="paytmBtn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Paytm_logo.png/640px-Paytm_logo.png" alt="Paytm" style="width: 50px; height: auto;">
+                            Paytm
+                        </a>
+                        <a href="https://www.phonepe.com" class="payment-btn phonepe" id="phonepeBtn">
+                            <img src="d:\mini project\gpay scanner\download__5_-removebg-preview.png" alt="PhonePe">
+                            PhonePe
+                        </a>
+                        <a href="https://www.amazon.in/amazonpay" class="payment-btn amazonpay" id="amazonpayBtn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png" alt="Amazon Pay">
+                            Amazon Pay
+                        </a>
+                    </div>
+                    <div style="text-align: center;">
+                        <p>Scan this QR code with your UPI app</p>
+                        <img src="d:/mini project/gpay scanner/gpay scanner.jpg" alt="Google Pay Scanner"
+                             style="height: 150px; width: 150px; margin-top: 30px; display: block; margin-left: auto; margin-right: auto;">
+                        <p>Or send payment to: <strong>veltechpharmacy@upi</strong></p>
+                    </div>
+                    
+                    
+                </div>
+
+                <div class="payment-method" id="codOption">
+                    <h2><i class="fas fa-money-bill-wave"></i> Cash on Delivery</h2>
+                    <p>Pay in cash when your order is delivered to your doorstep.</p>
+                    
+                    <div class="cod-details" id="codDetails">
+                        <p><i class="fas fa-info-circle"></i> Additional ₹25 handling charge applies for COD orders.</p>
+                        <p><i class="fas fa-clock"></i> Delivery within 2-3 business days.</p>
+                        <p><i class="fas fa-check-circle"></i> No online payment needed. Pay when you receive your medicines.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="confirm-btn" id="confirmBtn">
+                Confirm Payment
+            </button>
+        </div>
+
+        <!-- Delivery Details Form -->
+        <div class="delivery-form" id="deliveryForm">
+            <h2 style="color: #4CAF50; margin-bottom: 20px;"><i class="fas fa-truck"></i> Delivery Information</h2>
+            
+            <!-- Google Form Integration -->
+            <form id="deliveryDetailsForm" action="YOUR_GOOGLE_FORM_ACTION_URL" method="POST">
+                <!-- Hidden fields for payment method -->
+                <input type="hidden" name="entry.PAYMENT_METHOD_FIELD_ID" id="paymentMethodField">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="entry.FULL_NAME_FIELD_ID" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="tel" id="mobile" name="entry.MOBILE_FIELD_ID" required placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="entry.EMAIL_FIELD_ID" required placeholder="Enter your email address">
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Full Address</label>
+                    <textarea id="address" name="entry.ADDRESS_FIELD_ID" required placeholder="House no, Building, Street, Area"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="landmark">Landmark (Optional)</label>
+                        <input type="text" id="landmark" name="entry.LANDMARK_FIELD_ID" placeholder="Nearby famous place">
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input type="text" id="pincode" name="entry.PINCODE_FIELD_ID" required placeholder="6-digit pincode" pattern="[0-9]{6}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Drop Location Pin (Optional)</label>
+                    <input type="text" id="location" name="entry.LOCATION_FIELD_ID" placeholder="Google Maps link or coordinates">
+                </div>
+                
+                <div class="form-group">
+                    <label for="instructions">Delivery Instructions (Optional)</label>
+                    <textarea id="instructions" name="entry.INSTRUCTIONS_FIELD_ID" placeholder="Any special delivery instructions"></textarea>
+                </div>
+                
+                <div class="spinner" id="formSpinner"></div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Submit Delivery Details
+                </button>
+            </form>
+        </div>
+
+        <!-- Thank You Message -->
+        <div class="thank-you" id="thankYouMessage">
+            <div class="thank-you-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Thank You For Your Order!</h2>
+            <p>Your medicines will be delivered to your address shortly.</p>
+            <p><strong>VelTech Pharmacy</strong> appreciates your trust in us.</p>
+            <p>Order ID: <span id="orderId">VT2023-</span><span id="randomId"></span></p>
+            <p>For any queries, call us at <strong>+91 9876543210</strong></p>
+        </div>
+
+        <footer>
+            <p><i class="fas fa-lock"></i> Your payment is secure and encrypted</p>
+            <p>© 2023 VelTech Pharmacy. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentSection = document.getElementById('paymentSection');
+            const deliveryForm = document.getElementById('deliveryForm');
+            const thankYouMessage = document.getElementById('thankYouMessage');
+            const upiOption = document.getElementById('upiOption');
+            const codOption = document.getElementById('codOption');
+            const upiScanner = document.getElementById('upiScanner');
+            const codDetails = document.getElementById('codDetails');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const deliveryDetailsForm = document.getElementById('deliveryDetailsForm');
+            const randomIdSpan = document.getElementById('randomId');
+            const formSpinner = document.getElementById('formSpinner');
+            const paymentMethodField = document.getElementById('paymentMethodField');
+            
+            // Payment method buttons
+            const gpayBtn = document.getElementById('gpayBtn');
+            const paytmBtn = document.getElementById('paytmBtn');
+            const phonepeBtn = document.getElementById('phonepeBtn');
+            const amazonpayBtn = document.getElementById('amazonpayBtn');
+            
+            let selectedMethod = null;
+            
+            // Generate random order ID
+            function generateOrderId() {
+                const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let result = '';
+                for (let i = 0; i < 6; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+            
+            // UPI Option click handler
+            upiOption.addEventListener('click', function() {
+                selectedMethod = 'upi';
+                upiOption.classList.add('active');
+                codOption.classList.remove('active');
+                upiScanner.classList.add('active');
+                codDetails.classList.remove('active');
+            });
+            
+            // COD Option click handler
+            codOption.addEventListener('click', function() {
+                selectedMethod = 'cod';
+                codOption.classList.add('active');
+                upiOption.classList.remove('active');
+                upiScanner.classList.remove('active');
+                codDetails.classList.add('active');
+            });
+            
+            // Payment app buttons - simulate opening respective apps
+            gpayBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Redirecting to Google Pay...');
+            });
+            
+            paytmBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Redirecting to Paytm...');
+            });
+            
+            phonepeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Redirecting to PhonePe...');
+            });
+            
+            amazonpayBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Redirecting to Amazon Pay...');
+            });
+            
+            // Confirm payment button
+            confirmBtn.addEventListener('click', function() {
+                if (!selectedMethod) {
+                    alert('Please select a payment method');
+                    return;
+                }
+                
+                if (selectedMethod === 'upi') {
+                    alert('UPI payment selected. Please complete the payment in your UPI app.');
+                } else if (selectedMethod === 'cod') {
+                    alert('Cash on Delivery selected.');
+                }
+                
+                // Set payment method in hidden field
+                paymentMethodField.value = selectedMethod === 'upi' ? 'UPI Payment' : 'Cash on Delivery';
+                
+                // Show delivery form
+                paymentSection.style.display = 'none';
+                deliveryForm.classList.add('active');
+            });
+            
+            // Delivery form submission
+            deliveryDetailsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading spinner
+                formSpinner.style.display = 'block';
+                
+                // In a real implementation, this would submit to Google Forms
+                // For demo purposes, we'll simulate the submission
+                setTimeout(function() {
+                    // Generate and display order ID
+                    randomIdSpan.textContent = generateOrderId();
+                    
+                    // Hide spinner
+                    formSpinner.style.display = 'none';
+                    
+                    // Show thank you message
+                    deliveryForm.classList.remove('active');
+                    thankYouMessage.classList.add('active');
+                    
+                    // In a real implementation, you would submit the form here
+                    // Uncomment the next line to actually submit to Google Forms
+                    // e.target.submit();
+                }, 1500);
+            });
+            
+            // Initialize with UPI selected by default
+            upiOption.click();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs - VelTech Pharmacy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        .background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -2;
+            filter: blur(2px);
+            transform-style: preserve-3d;
+        }
+
+        .floating-pills {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .pill {
+            position: absolute;
+            background-color: rgba(100, 200, 255, 0.3);
+            border-radius: 20px;
+            filter: blur(1px);
+            transform-style: preserve-3d;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotateX(0) rotateY(0); }
+            50% { transform: translateY(-20px) rotateX(180deg) rotateY(180deg); }
+            100% { transform: translateY(0) rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            transform: translateZ(20px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+            transform: translateZ(30px);
+        }
+
+        .logo {
+            height: 140px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .logo:hover {
+            transform: rotateY(20deg) scale(1.1);
+        }
+
+        .search-container {
+            margin-top: 2rem;
+            transform: translateZ(20px);
+        }
+
+        #faq-search {
+            width: 60%;
+            max-width: 500px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #faq-search:focus {
+            outline: none;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 20px;
+            transform-style: preserve-3d;
+        }
+
+        .faq-categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .category-btn {
+            padding: 12px 25px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #3a7bd5;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: #3a7bd5;
+            color: white;
+            transform: translateY(-3px) translateZ(10px);
+            box-shadow: 0 8px 25px rgba(58, 123, 213, 0.3);
+        }
+
+        .faq-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: #3a7bd5;
+            margin-bottom: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1f0ff;
+            font-size: 1.8rem;
+            transform: translateZ(20px);
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px) translateZ(10px);
+            box-shadow: 0 15px 30px rgba(58, 123, 213, 0.15);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #3a7bd5;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.3s ease;
+            transform-origin: top;
+            transform-style: preserve-3d;
+        }
+
+        .faq-answer-content {
+            padding: 0 25px 20px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-item.active .faq-question {
+            color: #3a7bd5;
+        }
+
+        .toggle-icon {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon::before, .toggle-icon::after {
+            content: '';
+            position: absolute;
+            background-color: #3a7bd5;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-icon::before {
+            width: 20px;
+            height: 3px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .toggle-icon::after {
+            width: 3px;
+            height: 20px;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+        }
+
+        .faq-item.active .toggle-icon::after {
+            height: 0;
+        }
+
+        /* 3D Card Effect */
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 3rem auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            max-width: 800px;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(58, 123, 213, 0.1) 0%, rgba(0, 210, 255, 0.05) 100%);
+            z-index: -1;
+        }
+
+        .info-card h3 {
+            color: #3a7bd5;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 3rem;
+            transform-style: preserve-3d;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .footer-links a {
+            color: #fff;
+            margin: 0 1.5rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #00d2ff;
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #00d2ff;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(58, 123, 213, 0.3);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            transform-style: preserve-3d;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) translateZ(10px);
+            box-shadow: 0 10px 25px rgba(58, 123, 213, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo {
+                height: 70px;
+            }
+            
+            #faq-search {
+                width: 80%;
+            }
+            
+            .category-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .faq-question {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            
+            .footer-links a {
+                margin: 0.5rem 1rem;
+            }
+            
+            .back-to-top {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-layer"></div>
+    <div class="floating-pills" id="floatingPills"></div>
+
+    <header>
+        <div class="header-content">
+            <img src="d:\mini project\homepage images.jpeg\WhatsApp_Image_2025-03-22_at_18.46.02_2c60d0a4-removebg-preview.png" alt="VelTech Pharmacy Logo" class="logo">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our pharmacy services</p>
+            <div class="search-container">
+                <input type="text" id="faq-search" placeholder="Search FAQs...">
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="faq-categories">
+            <button class="category-btn active" data-category="all">All Questions</button>
+            <button class="category-btn" data-category="prescriptions">Prescriptions</button>
+            <button class="category-btn" data-category="delivery">Delivery</button>
+            <button class="category-btn" data-category="payments">Payments</button>
+            <button class="category-btn" data-category="account">Account</button>
+        </div>
+
+        <div class="info-card">
+            <h3>Need More Help?</h3>
+            <p>If you can't find the answer to your question in our FAQs, our customer service team is ready to assist you. Contact us via phone, email, or live chat for personalized support.</p>
+        </div>
+
+        <div class="faq-section">
+            <h2 class="section-title">General Questions</h2>
+            
+            <div class="faq-item" data-category="account">
+                <div class="faq-question">
+                    <span>How do I create an account with VelTech Pharmacy?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Creating an account is simple! Click on the "Sign Up" button at the top right of our website and fill in the required information including your name, email address, and a secure password. Once you verify your email address, you'll have full access to your account where you can manage prescriptions, set up auto-refills, and view your order history.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-category="prescriptions">
+                <div class="faq-question">
+                    <span>How do I transfer my prescription to VelTech Pharmacy?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Transferring your prescription is easy. You can either:</p>
+                        <ol>
+                            <li>Call us with your prescription information and we'll handle the transfer from your current pharmacy</li>
+                            <li>Use our online prescription transfer tool by providing your current pharmacy details and prescription information</li>
+                            <li>Ask your doctor to send new prescriptions directly to us</li>
+                        </ol>
+                        <p>Most transfers are completed within one business day.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-category="delivery">
+                <div class="faq-question">
+                    <span>What are your delivery options and timeframes?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>We offer several delivery options to meet your needs:</p>
+                        <ul>
+                            <li><strong>Standard Delivery:</strong> 3-5 business days (FREE for all prescription medications)</li>
+                            <li><strong>Express Delivery:</strong> 1-2 business days ($9.99)</li>
+                            <li><strong>Same-Day Delivery:</strong> Available in select areas for an additional fee ($14.99)</li>
+                        </ul>
+                        <p>Delivery times begin once your prescription is verified and processed by our pharmacists.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2 class="section-title">Prescription Questions</h2>
+            
+            <div class="faq-item" data-category="prescriptions">
+                <div class="faq-question">
+                    <span>How do I submit a new prescription?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>There are several ways to submit a new prescription:</p>
+                        <ol>
+                            <li><strong>Online:</strong> Upload a photo of your prescription through your account dashboard</li>
+                            <li><strong>Mobile App:</strong> Use our app to scan your prescription</li>
+                            <li><strong>Fax:</strong> Have your doctor fax the prescription to (123) 456-7891</li>
+                            <li><strong>Phone:</strong> Call us at (123) 456-7890 and we can contact your doctor for you</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-category="prescriptions">
+                <div class="faq-question">
+                    <span>Can I get a 90-day supply of my medication?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Yes, we offer 90-day supplies for most maintenance medications when approved by your insurance and prescribed by your doctor. Many of our customers find this option more convenient and cost-effective. To switch to a 90-day supply:</p>
+                        <ol>
+                            <li>Contact your doctor to request a new prescription for a 90-day supply</li>
+                            <li>Check with your insurance provider about coverage for 90-day supplies</li>
+                            <li>Update your prescription in your account or contact our pharmacy team</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-category="prescriptions">
+                <div class="faq-question">
+                    <span>How do I set up automatic refills?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Setting up automatic refills ensures you never run out of your important medications:</p>
+                        <ol>
+                            <li>Log in to your VelTech Pharmacy account</li>
+                            <li>Navigate to "My Prescriptions"</li>
+                            <li>Find the medication you want to auto-refill and click "Enable Auto-Refill"</li>
+                            <li>Set your preferred delivery frequency (we'll remind you before each shipment)</li>
+                            <li>Save your preferences</li>
+                        </ol>
+                        <p>You can pause or cancel auto-refills at any time through your account.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2 class="section-title">Payment & Insurance</h2>
+            
+            <div class="faq-item" data-category="payments">
+                <div class="faq-question">
+                    <span>What payment methods do you accept?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>We accept various payment methods for your convenience:</p>
+                        <ul>
+                            <li>All major credit/debit cards (Visa, Mastercard, American Express, Discover)</li>
+                            <li>Health Savings Account (HSA) and Flexible Spending Account (FSA) cards</li>
+                            <li>VelTech Pharmacy gift cards</li>
+                            <li>Apple Pay and Google Pay</li>
+                            <li>Insurance copayments (after we bill your insurance)</li>
+                        </ul>
+                        <p>All payments are processed securely through our encrypted payment system.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-category="payments">
+                <div class="faq-question">
+                    <span>How do I know if you accept my insurance?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>VelTech Pharmacy accepts most major insurance plans. To verify if we accept your insurance:</p>
+                        <ol>
+                            <li>Log in to your account and add your insurance information - we'll automatically check coverage</li>
+                            <li>Call our customer service team at (123) 456-7890 with your insurance card ready</li>
+                            <li>Check our list of accepted insurance providers on our Insurance Information page</li>
+                        </ol>
+                        <p>Even if we don't directly bill your insurance, you can submit receipts for reimbursement from your provider.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-category="payments">
+                <div class="faq-question">
+                    <span>Do you offer any discount programs?</span>
+                    <div class="toggle-icon"></div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Yes! We offer several ways to save on your medications:</p>
+                        <ul>
+                            <li><strong>VelTech Saver Program:</strong> Discounts on hundreds of generic medications (starting at $4 for 30-day supply)</li>
+                            <li><strong>Senior Discount:</strong> 10% off for customers 65+</li>
+                            <li><strong>Auto-Refill Discount:</strong> 5% off when you enroll in automatic refills</li>
+                            <li><strong>Referral Program:</strong> Earn $10 credit for each friend who fills a prescription with us</li>
+                        </ul>
+                        <p>Ask our pharmacists about the best savings options for your specific medications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <img src="https://via.placeholder.com/80x80?text=VelTech+Logo" alt="VelTech Pharmacy Logo" class="logo" style="filter: brightness(0) invert(1);">
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Services</a>
+                <a href="#">Prescriptions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <p>&copy; 2025 VelTech Pharmacy. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Create floating pills
+        const floatingPills = document.getElementById('floatingPills');
+        for (let i = 0; i < 15; i++) {
+            const pill = document.createElement('div');
+            pill.classList.add('pill');
+            
+            // Random size
+            const width = Math.random() * 60 + 20;
+            const height = width / 3;
+            
+            // Random position
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            
+            // Random animation delay
+            const delay = Math.random() * 15;
+            
+            pill.style.width = `${width}px`;
+            pill.style.height = `${height}px`;
+            pill.style.left = `${left}%`;
+            pill.style.top = `${top}%`;
+            pill.style.animationDelay = `${delay}s`;
+            pill.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            floatingPills.appendChild(pill);
+        }
+
+        // Back to top button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // FAQ accordion functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+                
+                // Close other open items
+                if (faqItem.classList.contains('active')) {
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        if (item !== faqItem && item.classList.contains('active')) {
+                            item.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        });
+
+        // FAQ search functionality
+        const faqSearch = document.getElementById('faq-search');
+        
+        faqSearch.addEventListener('input', () => {
+            const searchTerm = faqSearch.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    
+                    // Highlight matching text
+                    const questionSpan = item.querySelector('.faq-question span');
+                    const answerContent = item.querySelector('.faq-answer-content');
+                    
+                    if (searchTerm.length > 2) {
+                        const regex = new RegExp(searchTerm, 'gi');
+                        questionSpan.innerHTML = questionSpan.textContent.replace(regex, match => `<span class="highlight">${match}</span>`);
+                        answerContent.innerHTML = answerContent.textContent.replace(regex, match => `<span class="highlight">${match}</span>`);
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // FAQ category filtering
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const category = btn.dataset.category;
+                const faqItems = document.querySelectorAll('.faq-item');
+                
+                if (category === 'all') {
+                    faqItems.forEach(item => {
+                        item.style.display = 'block';
+                    });
+                } else {
+                    faqItems.forEach(item => {
+                        if (item.dataset.category === category) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // 3D tilt effect for info card
+        const infoCard = document.querySelector('.info-card');
+        
+        infoCard.addEventListener('mousemove', (e) => {
+            const x = e.clientX - infoCard.getBoundingClientRect().left;
+            const y = e.clientY - infoCard.getBoundingClientRect().top;
+            
+            const centerX = infoCard.offsetWidth / 2;
+            const centerY = infoCard.offsetHeight / 2;
+            
+            const angleX = (y - centerY) / 20;
+            const angleY = (centerX - x) / 20;
+            
+            infoCard.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+            infoCard.style.boxShadow = `${-angleY * 2}px ${angleX * 2}px 30px rgba(0, 0, 0, 0.2)`;
+        });
+        
+        infoCard.addEventListener('mouseleave', () => {
+            infoCard.style.transform = 'rotateX(0) rotateY(0)';
+            infoCard.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.1)';
+        });
+
+        // Parallax effect for background
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            document.querySelector('.background-layer').style.transform = `translateX(${x * 20}px) translateY(${y * 20}px)`;
+        });
+    </script>
+</body>
+</html>
